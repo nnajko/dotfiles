@@ -1,0 +1,188 @@
+@import "catppuccin-mocha"
+
+* {
+  selected-active-foreground:  @background;
+  lightfg:                     @text;
+  separatorcolor:              @foreground;
+  urgent-foreground:           @red;
+  alternate-urgent-background: @lightbg;
+  lightbg:                     @mantle;
+  background-color:            transparent;
+  border-color:                @foreground;
+  normal-background:           @background;
+  selected-urgent-background:  @red;
+  alternate-active-background: @lightbg;
+  spacing:                     2;
+  alternate-normal-foreground: @foreground;
+  urgent-background:           @background;
+  selected-normal-foreground:  @lightbg;
+  active-foreground:           @blue;
+  background:                  @base;
+  selected-active-background:  @blue;
+  active-background:           @background;
+  selected-normal-background:  @lightfg;
+  alternate-normal-background: @lightbg;
+  foreground:                  @text;
+  selected-urgent-foreground:  @background;
+  normal-foreground:           @foreground;
+  alternate-urgent-foreground: @red;
+  alternate-active-foreground: @blue;
+  font: "CaskaydiaCove Nerd Font";
+  g-spacing: 10px;
+  g-margin: 0;
+  b-radius: 8px;
+  g-padding: 8px;
+  w-border: 2px solid;
+  w-padding: 12px;
+}
+
+configuration {
+    modi: "drun";
+    show-icons: true;
+    display-drun: " ";
+}
+
+element {
+    padding: @g-padding;
+    cursor:  pointer;
+    spacing: @g-spacing;
+    border:  0;
+}
+
+element normal.normal {
+    background-color: @normal-background;
+    text-color:       @normal-foreground;
+}
+
+element normal.urgent {
+    background-color: @urgent-background;
+    text-color:       @urgent-foreground;
+}
+
+element normal.active {
+    background-color: @active-background;
+    text-color:       @active-foreground;
+}
+
+element selected.normal {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+
+element selected.urgent {
+    background-color: @selected-urgent-background;
+    text-color:       @selected-urgent-foreground;
+}
+
+element selected.active {
+    background-color: @selected-active-background;
+    text-color:       @selected-active-foreground;
+}
+
+element alternate.normal {
+    background-color: @alternate-normal-background;
+    text-color:       @alternate-normal-foreground;
+}
+
+element alternate.urgent {
+    background-color: @alternate-urgent-background;
+    text-color:       @alternate-urgent-foreground;
+}
+
+element alternate.active {
+    background-color: @alternate-active-background;
+    text-color:       @alternate-active-foreground;
+}
+
+element-text {
+    background-color: transparent;
+    cursor:           inherit;
+    highlight:        inherit;
+    text-color:       inherit;
+}
+
+element-icon {
+    background-color: transparent;
+    size:             1.0000em ;
+    cursor:           inherit;
+    text-color:       inherit;
+}
+
+window {
+    padding:          @w-padding;
+    background-color: @background;
+    border:           @w-border;
+}
+
+mainbox {
+    padding: @g-padding;
+    spacing: @g-spacing;
+    margin: @g-margin;
+    children: ["inputbar", "listview", "message"];
+}
+
+message {
+    padding:      1px ;
+    border-color: @separatorcolor;
+}
+
+textbox {
+    text-color: @foreground;
+}
+
+listview {
+    columns: 1;
+    lines: 10;
+    scrollbar: false;
+    fixed-height: true;
+    fixed-columns: true;
+    border:       0px solid;
+}
+
+button {
+    cursor:     pointer;
+    spacing:    0;
+    text-color: @normal-foreground;
+}
+
+button selected {
+    background-color: @selected-normal-background;
+    text-color:       @selected-normal-foreground;
+}
+
+num-filtered-rows {
+    expand:     false;
+    text-color: Gray;
+}
+
+num-rows {
+    expand:     false;
+    text-color: Gray;
+}
+
+textbox-num-sep {
+    expand:     false;
+    str:        "/";
+    text-color: Gray;
+}
+
+inputbar {
+    spacing:    @g-spacing;
+    text-color: @normal-foreground;
+    children: ["prompt", "entry"];
+}
+
+case-indicator {
+    text-color: @normal-foreground;
+}
+
+entry {
+    text-color:        @normal-foreground;
+    cursor:            text;
+    placeholder-color: Gray;
+    placeholder:       "Search";
+}
+
+prompt {
+    text-color: @normal-foreground;
+}
