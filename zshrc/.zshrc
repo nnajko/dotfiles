@@ -1,6 +1,6 @@
 # Init hyprland on login
 if [[ "$(tty)" == "/dev/tty1" ]]; then
-  exec hyprland &> /dev/null
+  exec start-hyprland &> /dev/null
 fi
 
 # Variables
