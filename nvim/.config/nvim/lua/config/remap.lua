@@ -16,3 +16,6 @@ vim.keymap.set("n", "<leader>Y", [["+Y]], { desc = "Yank line to clipboard" })
 
 -- Paste over selection without losing register
 vim.keymap.set("x", "<leader>p", [["_dP]], { desc = "Paste without losing register" })
+
+-- Set cwd to current buffer's directory
+vim.keymap.set("n", "<leader>cd", "<cmd>cd %:p:h<cr><cmd>pwd<cr>", { desc = "Set cwd to buffer dir" })
