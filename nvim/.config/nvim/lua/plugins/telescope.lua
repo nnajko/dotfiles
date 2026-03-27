@@ -9,6 +9,19 @@ return {
         pickers = {
             find_files = {
                 theme = "ivy"
+            },
+            live_grep = {
+                theme = "ivy"
+            },
+            buffers = {
+                theme = "ivy",
+                mappings = {
+                    i = { ["<c-x>"] = "delete_buffer" },
+                    n = { ["x"] = "delete_buffer" },
+                },
+            },
+            oldfiles = {
+                theme = "ivy"
             }
         },
         extensions = {
@@ -16,30 +29,50 @@ return {
         },
         defaults = {
             file_ignore_patterns = {
+                -- Directories
+                "node_modules/",
+                "%.git/",
+                "bin/",
+                "obj/",
+                "dist/",
+                "build/",
+                "__pycache__/",
+                "%.vs/",
+                "%.idea/",
+                "%.vscode/",
+                "packages/",
+
+                -- .NET generated
+                "%.Designer%.cs$",
+                "%.g%.cs$",
+
+                -- Binaries & artifacts
+                "%.dll$", "%.exe$", "%.pdb$",
+                "%.so$", "%.o$", "%.a$",
+
+                -- Images & fonts
+                "%.png$", "%.jpg$", "%.jpeg$", "%.gif$", "%.ico$", "%.svg$",
+                "%.woff2?$", "%.ttf$", "%.eot$",
+
+                -- Other binary/large files
+                "%.pdf$", "%.zip$", "%.tar$", "%.gz$",
+                "%.sql$", "%.vsd$",
+                "%.min%.js$", "%.min%.css$",
+                "%.map$",
+
+                -- Lock files
+                "package%-lock%.json$",
+                "pnpm%-lock%.yaml$",
+                "yarn%.lock$",
+
+                -- Project-specific
                 "Vagabond.CommerceManager",
                 "OrderXmlImport",
                 "Legacy",
                 "Mediachase.Commerce.Workflow",
-                "node_modules",
                 "Vagabond.DatabaseRestore",
                 "PandoraBox",
                 "ThumbnailResizer",
-                "%.sql$",
-                "%.vsd$",
-                "%.dll$",
-                "%.exe$",
-                "%.pdb$",
-                "%.png$",
-                "%.jpg$",
-                "%.gif$",
-                "%.ico$",
-                "%.woff$",
-                "%.woff2$",
-                "%.ttf$",
-                "%.eot$",
-                "%.pdf$",
-                "%.Designer%.cs$",
-                "%.g%.cs$"
             }
         }
     },
@@ -56,5 +89,7 @@ return {
             builtin.find_files { cwd = vim.fn.stdpath("config") }
         end, { desc = "Edit nvim config" })
         vim.keymap.set('n', '<leader>ps', builtin.live_grep, { desc = "Live grep" })
+        vim.keymap.set('n', '<leader>pb', builtin.buffers, { desc = "Open buffers" })
+        vim.keymap.set('n', '<leader>pr', builtin.oldfiles, { desc = "Recent files" })
     end
 }
