@@ -52,5 +52,8 @@ inv() { nvim $(fzf -m --preview="bat --color=always {}"); }
 # fzf
 command -v fzf &>/dev/null && source <(fzf --zsh)
 
+# Init mise
+command -v mise &>/dev/null && eval "$(mise activate zsh)"
+
 # Init starship
 command -v starship &>/dev/null && eval "$(starship init zsh)"
