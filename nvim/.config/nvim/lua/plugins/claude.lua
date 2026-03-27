@@ -12,9 +12,9 @@ return {
     { "<leader>ab", "<cmd>ClaudeCodeAdd %<cr>", desc = "Add current buffer" },
     { "<leader>as", "<cmd>ClaudeCodeSend<cr>", mode = "v", desc = "Send to Claude" },
     {
-      "<leader>as",
+      "<leader>at",
       "<cmd>ClaudeCodeTreeAdd<cr>",
-      desc = "Add file",
+      desc = "Add file from tree",
       ft = { "NvimTree", "neo-tree", "oil", "minifiles", "netrw" },
     },
     -- Diff management

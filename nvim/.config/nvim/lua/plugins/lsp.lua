@@ -34,8 +34,14 @@ return {
     },
     config = function()
         local capabilities = require('blink.cmp').get_lsp_capabilities()
-        vim.lsp.config('lua_ls', { capabilities = capabilities })
-        vim.lsp.enable('lua_ls')
+        local lspconfig = require('lspconfig')
+
+        lspconfig.lua_ls.setup({ capabilities = capabilities })
+        lspconfig.ts_ls.setup({ capabilities = capabilities })
+        lspconfig.jsonls.setup({ capabilities = capabilities })
+        lspconfig.yamlls.setup({ capabilities = capabilities })
+        lspconfig.html.setup({ capabilities = capabilities })
+        lspconfig.cssls.setup({ capabilities = capabilities })
 
         vim.lsp.config('easy_dotnet', { capabilities = capabilities })
         vim.lsp.enable('easy_dotnet')

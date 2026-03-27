@@ -15,6 +15,7 @@ return {
             yaml = { "prettier" },
             html = { "prettier" },
             css = { "prettier" },
+            markdown = { "prettier" },
         },
         format_on_save = {
             timeout_ms = 3000,
