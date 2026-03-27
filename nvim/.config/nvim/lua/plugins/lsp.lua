@@ -34,17 +34,12 @@ return {
     },
     config = function()
         local capabilities = require('blink.cmp').get_lsp_capabilities()
-        local lspconfig = require('lspconfig')
 
-        lspconfig.lua_ls.setup({ capabilities = capabilities })
-        lspconfig.ts_ls.setup({ capabilities = capabilities })
-        lspconfig.jsonls.setup({ capabilities = capabilities })
-        lspconfig.yamlls.setup({ capabilities = capabilities })
-        lspconfig.html.setup({ capabilities = capabilities })
-        lspconfig.cssls.setup({ capabilities = capabilities })
-
-        vim.lsp.config('easy_dotnet', { capabilities = capabilities })
-        vim.lsp.enable('easy_dotnet')
+        local servers = { 'lua_ls', 'ts_ls', 'jsonls', 'yamlls', 'html', 'cssls', 'easy_dotnet' }
+        for _, server in ipairs(servers) do
+            vim.lsp.config(server, { capabilities = capabilities })
+        end
+        vim.lsp.enable(servers)
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lsp-keymaps', { clear = true }),
