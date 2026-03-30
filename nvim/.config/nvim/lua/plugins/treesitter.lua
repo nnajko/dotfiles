@@ -2,19 +2,18 @@ return {
     "nvim-treesitter/nvim-treesitter",
     build = ":TSUpdate",
     config = function()
-        local treesitter = require('nvim-treesitter')
-        treesitter.install({
-            "c_sharp", "lua", "vim", "vimdoc", "query",
-            "markdown", "markdown_inline",
-            "json", "yaml", "xml", "toml",
-            "html", "css", "javascript", "typescript",
-            "bash", "dockerfile", "gitcommit", "gitignore",
-        })
-        treesitter.setup({
+        require('nvim-treesitter.configs').setup({
+            ensure_installed = {
+                "c_sharp", "lua", "vim", "vimdoc", "query",
+                "markdown", "markdown_inline",
+                "json", "yaml", "xml", "toml",
+                "html", "css", "javascript", "typescript",
+                "bash", "dockerfile", "gitcommit", "gitignore",
+            },
             highlight = {
                 enable = true,
-                additional_vim_regex_highlighting = false
-            }
+                additional_vim_regex_highlighting = false,
+            },
         })
     end,
 }
