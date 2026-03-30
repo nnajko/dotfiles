@@ -18,7 +18,7 @@ max_height      = 900
 
 [opener]
 edit = [
-	{ run = '${EDITOR:-vi} "$@"', desc = "$EDITOR", block = true },
+	{ run = 'nvim "%*"', orphan = true, desc = "nvim", block = true },
 ]
 
 [open]

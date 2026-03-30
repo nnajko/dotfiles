@@ -4,10 +4,7 @@
 	email = niklas.b@vagabond.com
 	name = Niklas Blomqvist
 [credential]
-	helper = 
-	helper = /usr/sbin/git-credential-manager
-	credentialStore = gpg
-	guiPrompt = false
+	helper = manager
 [credential "https://dev.azure.com"]
 	useHttpPath = true
 [core]

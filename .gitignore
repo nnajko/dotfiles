@@ -1,8 +1,6 @@
-# Plugin manager lockfiles and generated content
-nvim/.config/nvim/lazy-lock.json
-
-# Local/machine-specific overrides
-*.local
-
-# Python cache
-__pycache__/
+**/.claude/settings.local.json
+**/.DS_Store
+**/*.swp
+**/*.swo
+**/Thumbs.db
+**/desktop.ini
