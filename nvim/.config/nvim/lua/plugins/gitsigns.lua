@@ -8,21 +8,23 @@ return {
         word_diff           = false,
         on_attach = function(bufnr)
             local gs = require('gitsigns')
-            local opts = { buffer = bufnr }
+            local function map(mode, lhs, rhs, desc)
+                vim.keymap.set(mode, lhs, rhs, { buffer = bufnr, desc = desc })
+            end
 
             -- Navigation
-            vim.keymap.set('n', ']h', function() gs.nav_hunk('next') end, opts)
-            vim.keymap.set('n', '[h', function() gs.nav_hunk('prev') end, opts)
+            map('n', ']h', function() gs.nav_hunk('next') end, "Next hunk")
+            map('n', '[h', function() gs.nav_hunk('prev') end, "Prev hunk")
 
             -- Actions
-            vim.keymap.set('n', '<leader>hs', gs.stage_hunk, opts)
-            vim.keymap.set('n', '<leader>hr', gs.reset_hunk, opts)
-            vim.keymap.set('v', '<leader>hs', function() gs.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, opts)
-            vim.keymap.set('v', '<leader>hr', function() gs.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, opts)
-            vim.keymap.set('n', '<leader>hu', gs.undo_stage_hunk, opts)
-            vim.keymap.set('n', '<leader>hp', gs.preview_hunk, opts)
-            vim.keymap.set('n', '<leader>hb', function() gs.blame_line({ full = true }) end, opts)
-            vim.keymap.set('n', '<leader>hd', gs.diffthis, opts)
+            map('n', '<leader>hs', gs.stage_hunk, "Stage hunk")
+            map('n', '<leader>hr', gs.reset_hunk, "Reset hunk")
+            map('v', '<leader>hs', function() gs.stage_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, "Stage selection")
+            map('v', '<leader>hr', function() gs.reset_hunk({ vim.fn.line('.'), vim.fn.line('v') }) end, "Reset selection")
+            map('n', '<leader>hu', gs.undo_stage_hunk, "Undo stage hunk")
+            map('n', '<leader>hp', gs.preview_hunk, "Preview hunk")
+            map('n', '<leader>hb', function() gs.blame_line({ full = true }) end, "Blame line")
+            map('n', '<leader>hd', gs.diffthis, "Diff this")
         end
     }
 }

@@ -8,7 +8,6 @@ return {
     opts = {
         formatters_by_ft = {
             lua = { "stylua" },
-            cs = { "csharpier" },
             javascript = { "prettier" },
             typescript = { "prettier" },
             json = { "prettier" },

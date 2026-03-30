@@ -22,6 +22,12 @@ return {
             },
             oldfiles = {
                 theme = "ivy"
+            },
+            git_files = {
+                theme = "ivy"
+            },
+            help_tags = {
+                theme = "ivy"
             }
         },
         extensions = {

@@ -35,11 +35,12 @@ return {
     config = function()
         local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-        local servers = { 'lua_ls', 'ts_ls', 'jsonls', 'yamlls', 'html', 'cssls', 'easy_dotnet' }
+        local servers = { 'lua_ls', 'ts_ls', 'jsonls', 'yamlls', 'html', 'cssls' }
         for _, server in ipairs(servers) do
             vim.lsp.config(server, { capabilities = capabilities })
         end
         vim.lsp.enable(servers)
+
 
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lsp-keymaps', { clear = true }),
@@ -47,22 +48,26 @@ return {
                 local buf = args.buf
                 local opts = { buffer = buf, silent = true }
 
+                local function map(mode, lhs, rhs, desc)
+                    vim.keymap.set(mode, lhs, rhs, { buffer = buf, silent = true, desc = desc })
+                end
+
                 -- Navigation
-                vim.keymap.set("n", "gD", vim.lsp.buf.declaration, opts)
-                vim.keymap.set("n", "gd", vim.lsp.buf.definition, opts)
-                vim.keymap.set("n", "gr", vim.lsp.buf.references, opts)
-                vim.keymap.set("n", "gi", vim.lsp.buf.implementation, opts)
-                vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
-                vim.keymap.set("n", "<leader>ds", vim.lsp.buf.signature_help, opts)
+                map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+                map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+                map("n", "gr", vim.lsp.buf.references, "Find references")
+                map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+                map("n", "K", vim.lsp.buf.hover, "Hover info")
+                map("n", "<leader>ds", vim.lsp.buf.signature_help, "Signature help")
 
                 -- Actions
-                vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts)
-                vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, opts)
+                map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+                map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
 
                 -- Diagnostics
-                vim.keymap.set("n", "[d", vim.diagnostic.goto_prev, opts)
-                vim.keymap.set("n", "]d", vim.diagnostic.goto_next, opts)
-                vim.keymap.set("n", "<leader>e", vim.diagnostic.open_float, opts)
+                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
+                map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+                map("n", "<leader>e", vim.diagnostic.open_float, "Show diagnostic")
             end,
         })
     end,

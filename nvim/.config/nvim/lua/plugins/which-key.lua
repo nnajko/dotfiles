@@ -11,6 +11,7 @@ return {
             { "<leader>x", group = "Diagnostics" },
             { "<leader>c", group = "Code" },
             { "<leader>g", group = "Git" },
+            { "ys", group = "Surround add" },
         },
     },
 }
