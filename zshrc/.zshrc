@@ -1,4 +1,5 @@
-export PATH="${PATH}:$HOME/.config/scripts:$HOME/.dotnet/tools"
+# PATH
+export PATH="$HOME/.config/scripts:$HOME/.local/bin:$PATH"
 
 # Variables
 export EDITOR='nvim'
@@ -7,16 +8,36 @@ export SHELL='/usr/bin/zsh'
 # Starship config location
 export STARSHIP_CONFIG=~/.config/starship/starship.toml
 
-# Plugins
-source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# Options
+setopt HIST_IGNORE_DUPS
+setopt HIST_IGNORE_SPACE
+setopt HIST_FIND_NO_DUPS
+setopt HIST_REDUCE_BLANKS
+setopt EXTENDED_HISTORY
+setopt SHARE_HISTORY
+setopt AUTO_CD
+setopt AUTO_PUSHD
+setopt PUSHD_IGNORE_DUPS
+setopt PUSHD_SILENT
+setopt NO_BEEP
+
+# History
+HISTSIZE=1000000
+SAVEHIST=1000000
+HISTFILE=~/.zsh_history
+
+# Completions
+fpath=(/usr/share/zsh/site-functions $fpath)
+autoload -Uz compinit && compinit
+zstyle ':completion:*' matcher-list 'm:{a-z}={A-Z}'
+zstyle ':completion:*' menu select
 
 # Bindings
 bindkey -e
-bindkey "^[[1;5C" forward-word
-bindkey "^[[1;5D" backward-word
-bindkey "^[[1;3C" forward-word
-bindkey "^[[1;3D" backward-word
+bindkey "^[[1;5C" forward-word    # Ctrl+Right
+bindkey "^[[1;5D" backward-word   # Ctrl+Left
+bindkey "^[[1;3C" forward-word    # Alt+Right
+bindkey "^[[1;3D" backward-word   # Alt+Left
 bindkey "^[[3~" delete-char
 bindkey "^[[3;5~" delete-word
 
@@ -29,29 +50,29 @@ function y() {
   rm -f -- "$tmp"
 }
 
-# Alias
+# Git helpers
 alias gs='git status'
-alias gd='git diff ${1}'
-alias inv='nvim $(fzf -m --preview="bat --color=always {}")'
-alias ls='eza -lh --group-directories-first --icons=auto'
 alias gl='git log'
+alias ls='eza -lh --group-directories-first --icons=auto'
+alias rm='rm -I'
 
-# History
-HISTSIZE=1000000
-SAVEHIST=1000000
-HISTFILE=~/.zsh_history
+gd() { git diff "$@"; }
+inv() { nvim $(fzf -m --preview="bat --color=always {}"); }
+
+# Plugins
+[[ -f /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh ]] && \
+  source /usr/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+[[ -f /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh ]] && \
+  source /usr/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # fzf
-source <(fzf --zsh)
+command -v fzf &>/dev/null && source <(fzf --zsh)
+
+# Init mise
+command -v mise &>/dev/null && eval "$(mise activate zsh)"
+
+# Init zoxide
+command -v zoxide &>/dev/null && eval "$(zoxide init zsh)"
 
 # Init starship
-eval "$(starship init zsh)"
-
-# pnpm
-export PNPM_HOME="/home/niklasblomqvist/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-export PATH="$HOME/.local/bin:$PATH"
+command -v starship &>/dev/null && eval "$(starship init zsh)"
