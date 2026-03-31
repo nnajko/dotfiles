@@ -1,112 +1,81 @@
-local root_files = {
-	".luarc.json",
-	".luarc.jsonc",
-	".luacheckrc",
-	".stylua.toml",
-	"stylua.toml",
-	"selene.toml",
-	"selene.yml",
-	".git",
-}
-
 return {
-	"neovim/nvim-lspconfig",
-	dependencies = {
-		"stevearc/conform.nvim",
-		"williamboman/mason.nvim",
-		"williamboman/mason-lspconfig.nvim",
-		"hrsh7th/cmp-nvim-lsp",
-		"hrsh7th/cmp-buffer",
-		"hrsh7th/cmp-path",
-		"hrsh7th/cmp-cmdline",
-		"hrsh7th/nvim-cmp",
-		"L3MON4D3/LuaSnip",
-		"saadparwaiz1/cmp_luasnip",
-		"j-hui/fidget.nvim",
-	},
+    "neovim/nvim-lspconfig",
+    dependencies = {
+        {
+            'saghen/blink.cmp',
+            version = '1.*',
+            dependencies = {
+                "giuxt/blink-cmp-copilot",
+            },
+            config = function()
+                local blink = require('blink.cmp')
+                blink.setup({
+                    fuzzy = { implementation = "prefer_rust_with_warning" },
+                    sources = {
+                        default = { "lsp", "copilot", "easy-dotnet", "path", "snippets", "buffer" },
+                        providers = {
+                            ["easy-dotnet"] = {
+                                name = "easy-dotnet",
+                                enabled = true,
+                                module = "easy-dotnet.completion.blink",
+                                score_offset = 10000,
+                                async = true,
+                            },
+                            ["copilot"] = {
+                                name = "copilot",
+                                module = "blink-cmp-copilot",
+                                score_offset = 100,
+                                async = true,
+                            },
+                        },
+                    },
+                })
+            end,
+        },
+        {
+            "folke/lazydev.nvim",
+            opts = {
+                library = {
+                    { path = "${3rd}/luv/library", words = { "vim%.uv" } },
+                },
+            },
+        },
+    },
+    config = function()
+        local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-	config = function()
-		local cmp = require("cmp")
-		local cmp_lsp = require("cmp_nvim_lsp")
-		local capabilities = vim.tbl_deep_extend(
-			"force",
-			{},
-			vim.lsp.protocol.make_client_capabilities(),
-			cmp_lsp.default_capabilities()
-		)
+        local servers = { 'lua_ls', 'ts_ls', 'jsonls', 'yamlls', 'html', 'cssls', 'rust_analyzer' }
+        for _, server in ipairs(servers) do
+            vim.lsp.config(server, { capabilities = capabilities })
+        end
+        vim.lsp.enable(servers)
 
-		require("fidget").setup({})
-		require("mason").setup({
-			registries = {
-				"github:mason-org/mason-registry",
-				"github:Crashdummyy/mason-registry",
-			},
-		})
-		require("mason-lspconfig").setup({
-			ensure_installed = {
-				"lua_ls",
-				"rust_analyzer",
-			},
-			handlers = {
-				function(server_name)
-					require("lspconfig")[server_name].setup({
-						capabilities = capabilities,
-					})
-				end,
+        vim.api.nvim_create_autocmd('LspAttach', {
+            group = vim.api.nvim_create_augroup('lsp-keymaps', { clear = true }),
+            callback = function(args)
+                local buf = args.buf
 
-				["lua_ls"] = function()
-					local lspconfig = require("lspconfig")
-					lspconfig.lua_ls.setup({
-						capabilities = capabilities,
-						settings = {
-							Lua = {
-								format = {
-									enable = true,
-									defaultConfig = {
-										indent_style = "space",
-										indent_size = "2",
-									},
-								},
-							},
-						},
-					})
-				end,
-			},
-		})
+                local function map(mode, lhs, rhs, desc)
+                    vim.keymap.set(mode, lhs, rhs, { buffer = buf, silent = true, desc = desc })
+                end
 
-		local cmp_select = { behavior = cmp.SelectBehavior.Select }
+                -- Navigation
+                map("n", "gD", vim.lsp.buf.declaration, "Go to declaration")
+                map("n", "gd", vim.lsp.buf.definition, "Go to definition")
+                map("n", "gr", vim.lsp.buf.references, "Find references")
+                map("n", "gi", vim.lsp.buf.implementation, "Go to implementation")
+                map("n", "K", vim.lsp.buf.hover, "Hover info")
+                map("n", "<leader>ds", vim.lsp.buf.signature_help, "Signature help")
 
-		cmp.setup({
-			snippet = {
-				expand = function(args)
-					require("luasnip").lsp_expand(args.body) -- For `luasnip` users.
-				end,
-			},
-			mapping = cmp.mapping.preset.insert({
-				["<C-p>"] = cmp.mapping.select_prev_item(cmp_select),
-				["<C-n>"] = cmp.mapping.select_next_item(cmp_select),
-				["<C-y>"] = cmp.mapping.confirm({ select = true }),
-				["<C-Space>"] = cmp.mapping.complete(),
-			}),
-			sources = cmp.config.sources({
-				{ name = "copilot", group_index = 2 },
-				{ name = "nvim_lsp" },
-				{ name = "luasnip" }, -- For luasnip users.
-			}, {
-				{ name = "buffer" },
-			}),
-		})
+                -- Actions
+                map("n", "<leader>rn", vim.lsp.buf.rename, "Rename symbol")
+                map({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, "Code action")
 
-		vim.diagnostic.config({
-			-- update_in_insert = true,
-			float = {
-				focusable = false,
-				style = "minimal",
-				border = "rounded",
-				source = "always",
-				header = "",
-				prefix = "",
-			},
-		})
-	end,
+                -- Diagnostics
+                map("n", "[d", vim.diagnostic.goto_prev, "Prev diagnostic")
+                map("n", "]d", vim.diagnostic.goto_next, "Next diagnostic")
+                map("n", "<leader>e", vim.diagnostic.open_float, "Show diagnostic")
+            end,
+        })
+    end,
 }

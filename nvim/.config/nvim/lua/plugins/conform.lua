@@ -1,41 +1,24 @@
 return {
-	"stevearc/conform.nvim",
-	opts = {},
-	config = function()
-		require("conform").setup({
-			format_on_save = {
-				timeout_ms = 5000,
-				lsp_format = "fallback",
-			},
-			formatters_by_ft = {
-				c = { "clang-format" },
-				cpp = { "clang-format" },
-				lua = { "stylua" },
-				go = { "gofmt" },
-				javascript = { "prettier" },
-				typescript = { "prettier" },
-				elixir = { "mix" },
-				rust = { "rustfmt", lsp_format = "fallback" },
-				cs = { "csharpier" },
-				json = { "prettier" },
-			},
-			formatters = {
-				["clang-format"] = {
-					prepend_args = { "-style=file", "-fallback-style=LLVM" },
-				},
-			},
-		})
-
-		vim.keymap.set("n", "<leader>f", function()
-			require("conform").format({ bufnr = 0 })
-		end)
-	end,
-	init = function()
-		vim.api.nvim_create_autocmd("BufWritePre", {
-			pattern = "*",
-			callback = function(args)
-				require("conform").format({ bufnr = args.buf })
-			end,
-		})
-	end,
+    "stevearc/conform.nvim",
+    event = { "BufWritePre" },
+    cmd = { "ConformInfo" },
+    keys = {
+        { "<leader>f", function() require("conform").format({ async = true }) end, mode = { "n", "v" }, desc = "Format buffer" },
+    },
+    opts = {
+        formatters_by_ft = {
+            lua = { "stylua" },
+            javascript = { "prettier" },
+            typescript = { "prettier" },
+            json = { "prettier" },
+            yaml = { "prettier" },
+            html = { "prettier" },
+            css = { "prettier" },
+            markdown = { "prettier" },
+        },
+        format_on_save = {
+            timeout_ms = 3000,
+            lsp_format = "fallback",
+        },
+    },
 }
