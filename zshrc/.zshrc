@@ -1,5 +1,5 @@
 # PATH
-export PATH="$HOME/.config/scripts:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/scripts:$HOME/.dotnet/tools:$HOME/.local/bin:$PATH"
 
 # Variables
 export EDITOR='nvim'
