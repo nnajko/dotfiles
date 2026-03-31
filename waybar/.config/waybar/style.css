@@ -38,6 +38,9 @@ tooltip, tooltip * {
   color: @sky;
 }
 
+#custom-frigate,
+#custom-borg,
+#custom-updates,
 #custom-music,
 #clock,
 #pulseaudio,
@@ -99,6 +102,47 @@ tooltip, tooltip * {
 #custom-notifications {
   margin-right: 0.5rem;
   border-radius: 0.5rem;
+}
+
+#custom-borg {
+  border-radius: 0.5rem;
+  margin-right: 0.5rem;
+  color: @green;
+}
+
+#custom-borg.running {
+  color: @yellow;
+}
+
+#custom-borg.stale,
+#custom-borg.fail {
+  color: @red;
+}
+
+#custom-borg.unknown {
+  color: @overlay0;
+}
+
+#custom-updates {
+  border-radius: 0.5rem;
+  margin-right: 0.5rem;
+  color: @peach;
+}
+
+#custom-updates.none {
+  background: none;
+  padding: 0;
+  margin: 0;
+}
+
+#custom-frigate {
+  border-radius: 0.5rem;
+  margin-right: 0.5rem;
+  color: @green;
+}
+
+#custom-frigate.muted {
+  color: @overlay0;
 }
 
 #tray {

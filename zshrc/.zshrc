@@ -1,7 +1,4 @@
-# Init hyprland on login
-if [[ "$(tty)" == "/dev/tty1" ]]; then
-  exec start-hyprland &> /dev/null
-fi
+export PATH="${PATH}:$HOME/.config/scripts:$HOME/.dotnet/tools"
 
 # Variables
 export EDITOR='nvim'
@@ -49,3 +46,12 @@ source <(fzf --zsh)
 
 # Init starship
 eval "$(starship init zsh)"
+
+# pnpm
+export PNPM_HOME="/home/niklasblomqvist/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+export PATH="$HOME/.local/bin:$PATH"

@@ -4,7 +4,7 @@
     "margin-top": 0,
     "modules-left": ["hyprland/workspaces"],
     "modules-center": ["custom/music"],
-    "modules-right": ["tray", "pulseaudio", "clock", "network", "bluetooth", "custom/notifications", "custom/power"],
+    "modules-right": ["tray", "custom/frigate", "custom/borg", "custom/updates", "pulseaudio", "clock", "network", "bluetooth", "custom/notifications", "custom/power"],
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
@@ -25,7 +25,7 @@
         "format-linked": "󱘖 ",
         "format-disconnected": " ",
         "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c impala",
-        "interval": 1
+        "interval": 5
     },
     "bluetooth": {
         "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c bluetuith",
@@ -66,6 +66,26 @@
         "on-click-right": "pactl -- set-sink-mute 0 toggle",
         "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer"
     },
+    "custom/frigate": {
+        "exec": "if [ -f ~/.cache/frigate-notify-muted ]; then echo '{\"text\": \"󰂛\", \"class\": \"muted\", \"tooltip\": \"Frigate: muted\"}'; else echo '{\"text\": \"󰖃\", \"class\": \"active\", \"tooltip\": \"Frigate: active\"}'; fi",
+        "return-type": "json",
+        "interval": 2,
+        "on-click": "~/.local/bin/frigate-notify-toggle.sh",
+        "format": "{}"
+    },
+    "custom/borg": {
+        "exec": "~/.config/scripts/borg-status.sh",
+        "return-type": "json",
+        "interval": 60,
+        "format": "{}"
+    },
+    "custom/updates": {
+        "exec": "count=$(checkupdates 2>/dev/null | wc -l); if [ \"$count\" -gt 0 ]; then echo \"{\\\"text\\\": \\\"󰏔 $count\\\", \\\"tooltip\\\": \\\"$count pending updates\\\", \\\"class\\\": \\\"pending\\\"}\"; else echo '{\"text\": \"\", \"class\": \"none\"}'; fi",
+        "return-type": "json",
+        "interval": 3600,
+        "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c 'sudo pacman -Syu; echo; echo Done. Press enter to close.; read'",
+        "format": "{}"
+    },
     "custom/lock": {
         "tooltip-format": "Lock",
         "on-click": "hyprlock",
@@ -78,7 +98,7 @@
     },
     "custom/notifications": {
         "exec": "swaync-client -c -sw",
-        "interval": 1,
+        "interval": 5,
         "format": " {}",
         "on-click": "swaync-client -t -sw",
         "tooltip-format": "Open notifications"
