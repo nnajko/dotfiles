@@ -1,0 +1,11 @@
+# Plugin manager lockfiles and generated content
+nvim/.config/nvim/lazy-lock.json
+
+# Local/machine-specific overrides
+*.local
+
+# Python cache
+__pycache__/
+
+# TPM managed plugins
+tmux/.tmux/plugins/
