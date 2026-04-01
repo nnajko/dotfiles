@@ -2,9 +2,25 @@
     "layer": "top",
     "position": "top",
     "margin-top": 0,
-    "modules-left": ["hyprland/workspaces"],
-    "modules-center": ["custom/music"],
-    "modules-right": ["tray", "custom/frigate", "custom/borg", "custom/updates", "pulseaudio", "clock", "network", "bluetooth", "custom/notifications", "custom/power"],
+    "modules-left": [
+        "hyprland/workspaces"
+    ],
+    "modules-center": [
+        "mpris"
+    ],
+    "modules-right": [
+        "tray",
+        "custom/frigate",
+        "custom/borg",
+        "custom/updates",
+        "pulseaudio",
+        "clock",
+        "network",
+        "bluetooth",
+        "custom/notifications",
+        "custom/lock",
+        "custom/power"
+    ],
     "hyprland/workspaces": {
         "disable-scroll": true,
         "all-outputs": false,
@@ -41,27 +57,21 @@
         "icon-size": 14,
         "spacing": 15
     },
-    "custom/music": {
-        "format": "  {}",
-        "escape": true,
-        "interval": 5,
-        "tooltip": false,
-        "exec": "playerctl -p spotify metadata --format='{{ artist }} - {{ title }}'",
-        "on-click": "playerctl -p spotify play-pause",
-        "max-length": 75
-    },
     "clock": {
         "timezone": "Europe/Stockholm",
-        "tooltip-format": "<big>{:%Y %B}</big>\n<tt><small>{calendar}</small></tt>",
-        "format-alt": "󰥔 {:%d/%m/%Y}",
-        "format": "󰥔 {:%H:%M}"
+        "format": "󰥔 {:%H:%M}",
+        "on-click": "~/.config/scripts/calendar-toggle.sh",
+        "tooltip": false
     },
     "pulseaudio": {
-        // "scroll-step": 1, // %, can be a float
         "format": "{icon} {volume}%",
         "format-muted": "  0%",
         "format-icons": {
-            "default": ["", "", " "]
+            "default": [
+                "",
+                "",
+                " "
+            ]
         },
         "on-click-right": "pactl -- set-sink-mute 0 toggle",
         "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer"
@@ -80,7 +90,7 @@
         "format": "{}"
     },
     "custom/updates": {
-        "exec": "count=$(checkupdates 2>/dev/null | wc -l); if [ \"$count\" -gt 0 ]; then echo \"{\\\"text\\\": \\\"󰏔 $count\\\", \\\"tooltip\\\": \\\"$count pending updates\\\", \\\"class\\\": \\\"pending\\\"}\"; else echo '{\"text\": \"\", \"class\": \"none\"}'; fi",
+        "exec": "~/.config/scripts/check-updates.sh",
         "return-type": "json",
         "interval": 3600,
         "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c 'sudo pacman -Syu; echo; echo Done. Press enter to close.; read'",
@@ -89,7 +99,7 @@
     "custom/lock": {
         "tooltip-format": "Lock",
         "on-click": "hyprlock",
-        "format": "",
+        "format": ""
     },
     "custom/power": {
         "tooltip-format": "Power off",
@@ -97,11 +107,20 @@
         "format": "⏻ "
     },
     "custom/notifications": {
-        "exec": "swaync-client -c -sw",
-        "interval": 5,
-        "format": " {}",
+        "exec": "swaync-client -swb",
+        "return-type": "json",
+        "format": " {text}",
         "on-click": "swaync-client -t -sw",
+        "escape": true,
         "tooltip-format": "Open notifications"
+    },
+    "mpris": {
+        "format": "  {artist} - {title}",
+        "format-paused": "  {artist} - {title}",
+        "format-stopped": "",
+        "player": "spotify",
+        "tooltip": false,
+        "on-click": "playerctl -p spotify play-pause",
+        "max-length": 75
     }
 }
-

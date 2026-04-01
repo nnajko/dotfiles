@@ -41,7 +41,7 @@ tooltip, tooltip * {
 #custom-frigate,
 #custom-borg,
 #custom-updates,
-#custom-music,
+#mpris,
 #clock,
 #pulseaudio,
 #custom-lock,
@@ -66,7 +66,7 @@ tooltip, tooltip * {
   border-radius: 0.5rem 0px 0px 0.5rem;
 }
 
-#custom-music {
+#mpris {
   color: @mauve;
   border-radius: 0.5rem;
 }
@@ -94,7 +94,7 @@ tooltip, tooltip * {
 
 #custom-power {
     margin-right: 1rem;
-    border-radius: 0.5rem;
+    border-radius: 0px 0.5rem 0.5rem 0px;
     color: @blue;
     padding-right: 0.5rem;
 }
@@ -156,4 +156,17 @@ tooltip, tooltip * {
 #tray menu {
   background-color: @surface0;
   padding: 0.5rem;
+}
+
+#custom-frigate:hover,
+#custom-borg:hover,
+#custom-updates:hover,
+#mpris:hover,
+#pulseaudio:hover,
+#network:hover,
+#bluetooth:hover,
+#custom-notifications:hover,
+#custom-lock:hover,
+#custom-power:hover {
+  color: @rosewater;
 }
