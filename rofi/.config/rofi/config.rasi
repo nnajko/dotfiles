@@ -15,13 +15,13 @@
   spacing:                     2;
   alternate-normal-foreground: @foreground;
   urgent-background:           @background;
-  selected-normal-foreground:  @lightbg;
+  selected-normal-foreground:  @text;
   active-foreground:           @blue;
   background:                  @base;
   selected-active-background:  @blue;
   active-background:           @background;
-  selected-normal-background:  @lightfg;
-  alternate-normal-background: @lightbg;
+  selected-normal-background:  @surface0;
+  alternate-normal-background: transparent;
   foreground:                  @text;
   selected-urgent-foreground:  @background;
   normal-foreground:           @foreground;
@@ -33,12 +33,17 @@
   b-radius: 8px;
   g-padding: 8px;
   w-border: 2px solid;
+  w-border-color: @surface1;
   w-padding: 12px;
 }
 
 configuration {
-    modi: "drun";
+    modi: "drun,window,calc";
     show-icons: true;
+    display-window: "  ";
+    matching: "fuzzy";
+    sort: true;
+    sorting-method: "fzf";
     display-drun: " ";
 }
 
@@ -47,6 +52,7 @@ element {
     cursor:  pointer;
     spacing: @g-spacing;
     border:  0;
+    border-radius: @b-radius;
 }
 
 element normal.normal {
@@ -103,7 +109,7 @@ element-text {
 
 element-icon {
     background-color: transparent;
-    size:             1.0000em ;
+    size:             1.2em;
     cursor:           inherit;
     text-color:       inherit;
 }
@@ -112,6 +118,8 @@ window {
     padding:          @w-padding;
     background-color: @background;
     border:           @w-border;
+    border-color:     @w-border-color;
+    border-radius:    10px;
 }
 
 mainbox {
