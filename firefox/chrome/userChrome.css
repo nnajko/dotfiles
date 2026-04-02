@@ -1,0 +1,237 @@
+/* Catppuccin Mocha - matching Hyprland setup */
+
+:root {
+  --ctp-rosewater: #f5e0dc;
+  --ctp-flamingo: #f2cdcd;
+  --ctp-pink: #f5c2e7;
+  --ctp-mauve: #cba6f7;
+  --ctp-red: #f38ba8;
+  --ctp-maroon: #eba0ac;
+  --ctp-peach: #fab387;
+  --ctp-yellow: #f9e2af;
+  --ctp-green: #a6e3a1;
+  --ctp-teal: #94e2d5;
+  --ctp-sky: #89dceb;
+  --ctp-sapphire: #74c7ec;
+  --ctp-blue: #89b4fa;
+  --ctp-lavender: #b4befe;
+  --ctp-text: #cdd6f4;
+  --ctp-subtext1: #bac2de;
+  --ctp-subtext0: #a6adc8;
+  --ctp-overlay2: #9399b2;
+  --ctp-overlay1: #7f849c;
+  --ctp-overlay0: #6c7086;
+  --ctp-surface2: #585b70;
+  --ctp-surface1: #45475a;
+  --ctp-surface0: #313244;
+  --ctp-base: #1e1e2e;
+  --ctp-mantle: #181825;
+  --ctp-crust: #11111b;
+}
+
+/* ==============================
+   Global overrides
+   ============================== */
+
+:root {
+  --toolbar-bgcolor: var(--ctp-base) !important;
+  --toolbar-color: var(--ctp-text) !important;
+  --toolbar-field-background-color: var(--ctp-surface0) !important;
+  --toolbar-field-color: var(--ctp-text) !important;
+  --toolbar-field-focus-background-color: var(--ctp-surface0) !important;
+  --toolbar-field-focus-color: var(--ctp-text) !important;
+  --toolbar-field-border-color: var(--ctp-surface1) !important;
+  --toolbar-field-focus-border-color: var(--ctp-sapphire) !important;
+  --lwt-toolbar-field-highlight: var(--ctp-blue) !important;
+  --lwt-toolbar-field-highlight-text: var(--ctp-base) !important;
+  --tab-selected-bgcolor: var(--ctp-surface0) !important;
+  --tab-selected-textcolor: var(--ctp-text) !important;
+  --arrowpanel-background: var(--ctp-base) !important;
+  --arrowpanel-color: var(--ctp-text) !important;
+  --arrowpanel-border-color: var(--ctp-surface1) !important;
+  --urlbar-box-bgcolor: var(--ctp-surface0) !important;
+  --urlbar-box-hover-bgcolor: var(--ctp-surface1) !important;
+  --urlbar-box-active-bgcolor: var(--ctp-surface1) !important;
+  --urlbar-box-text-color: var(--ctp-text) !important;
+  --sidebar-background-color: var(--ctp-mantle) !important;
+  --sidebar-text-color: var(--ctp-text) !important;
+  --sidebar-border-color: var(--ctp-surface0) !important;
+  font-family: "CaskaydiaCove Nerd Font", monospace !important;
+}
+
+/* ==============================
+   Tab bar
+   ============================== */
+
+#titlebar {
+  background: var(--ctp-crust) !important;
+}
+
+#TabsToolbar {
+  background: var(--ctp-crust) !important;
+}
+
+.tabbrowser-tab .tab-background {
+  border-radius: 8px !important;
+  margin-block: 4px !important;
+}
+
+.tabbrowser-tab:not([selected]) .tab-background {
+  background: transparent !important;
+}
+
+.tabbrowser-tab:not([selected]):hover .tab-background {
+  background: var(--ctp-surface0) !important;
+}
+
+.tabbrowser-tab[selected] .tab-background {
+  background: var(--ctp-surface0) !important;
+  border: none !important;
+}
+
+.tabbrowser-tab .tab-text {
+  color: var(--ctp-subtext0) !important;
+}
+
+.tabbrowser-tab[selected] .tab-text {
+  color: var(--ctp-text) !important;
+}
+
+/* Tab close button */
+.tab-close-button:hover {
+  background-color: var(--ctp-red) !important;
+  border-radius: 4px !important;
+}
+
+/* ==============================
+   Navigation bar
+   ============================== */
+
+#nav-bar {
+  background: var(--ctp-base) !important;
+  border-bottom: 1px solid var(--ctp-surface0) !important;
+}
+
+/* URL bar */
+#urlbar-background {
+  background: var(--ctp-surface0) !important;
+  border: 2px solid var(--ctp-surface1) !important;
+  border-radius: 8px !important;
+}
+
+#urlbar[focused] #urlbar-background {
+  border-color: var(--ctp-sapphire) !important;
+}
+
+#urlbar-input {
+  color: var(--ctp-text) !important;
+}
+
+/* ==============================
+   Bookmarks bar
+   ============================== */
+
+#PersonalToolbar {
+  background: var(--ctp-base) !important;
+  border-bottom: 1px solid var(--ctp-surface0) !important;
+}
+
+#PersonalToolbar .bookmark-item {
+  color: var(--ctp-subtext1) !important;
+}
+
+#PersonalToolbar .bookmark-item:hover {
+  background: var(--ctp-surface0) !important;
+  border-radius: 6px !important;
+  color: var(--ctp-text) !important;
+}
+
+/* ==============================
+   Menus and panels
+   ============================== */
+
+menupopup,
+panel {
+  --panel-background: var(--ctp-base) !important;
+  --panel-color: var(--ctp-text) !important;
+  --panel-border-color: var(--ctp-surface1) !important;
+}
+
+menupopup {
+  background-color: var(--ctp-base) !important;
+  color: var(--ctp-text) !important;
+  border: 2px solid var(--ctp-surface1) !important;
+  border-radius: 8px !important;
+}
+
+menuitem:hover,
+menu:hover {
+  background-color: var(--ctp-surface0) !important;
+  color: var(--ctp-text) !important;
+  border-radius: 4px !important;
+}
+
+/* ==============================
+   Sidebar
+   ============================== */
+
+#sidebar-box {
+  background: var(--ctp-mantle) !important;
+  border-right: 1px solid var(--ctp-surface0) !important;
+}
+
+#sidebar-header {
+  background: var(--ctp-mantle) !important;
+  border-bottom: 1px solid var(--ctp-surface0) !important;
+  color: var(--ctp-text) !important;
+}
+
+/* ==============================
+   Findbar
+   ============================== */
+
+.findbar-container {
+  background: var(--ctp-base) !important;
+  color: var(--ctp-text) !important;
+}
+
+.findbar-textbox {
+  background: var(--ctp-surface0) !important;
+  color: var(--ctp-text) !important;
+  border: 2px solid var(--ctp-surface1) !important;
+  border-radius: 6px !important;
+}
+
+.findbar-textbox:focus {
+  border-color: var(--ctp-sapphire) !important;
+}
+
+/* ==============================
+   Toolbar buttons
+   ============================== */
+
+#nav-bar toolbarbutton:hover:not([disabled]),
+#TabsToolbar toolbarbutton:hover:not([disabled]) {
+  background: var(--ctp-surface0) !important;
+  border-radius: 6px !important;
+}
+
+/* ==============================
+   Autocomplete / URL dropdown
+   ============================== */
+
+.urlbarView {
+  background: var(--ctp-base) !important;
+  color: var(--ctp-text) !important;
+  border: 2px solid var(--ctp-surface1) !important;
+  border-radius: 8px !important;
+}
+
+.urlbarView-row[selected] {
+  background: var(--ctp-surface0) !important;
+  color: var(--ctp-text) !important;
+}
+
+.urlbarView-url {
+  color: var(--ctp-sapphire) !important;
+}

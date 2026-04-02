@@ -12,3 +12,6 @@ fi
 
 ln -sf "$SCRIPT_DIR/user.js" "$PROFILE_DIR/user.js"
 echo "Linked user.js -> $PROFILE_DIR/user.js"
+
+ln -sfn "$SCRIPT_DIR/chrome" "$PROFILE_DIR/chrome"
+echo "Linked chrome/ -> $PROFILE_DIR/chrome"

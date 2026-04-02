@@ -13,6 +13,9 @@ user_pref("media.ffmpeg.vaapi.enabled", true);
 // === Wayland / Linux integration ===
 user_pref("widget.use-xdg-desktop-portal.file-picker", 1);
 
+// === Enable userChrome.css ===
+user_pref("toolkit.legacyUserProfileCustomizations.stylesheets", true);
+
 // === Disable bloat / telemetry ===
 user_pref("extensions.pocket.enabled", false);
 user_pref("browser.newtabpage.activity-stream.feeds.telemetry", false);
