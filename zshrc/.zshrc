@@ -3,6 +3,7 @@ export PATH="$HOME/.config/scripts:$HOME/.dotnet/tools:$HOME/.local/bin:$PATH"
 
 # Variables
 export EDITOR='nvim'
+export SUDO_EDITOR='nvim'
 export SHELL='/usr/bin/zsh'
 
 # Starship config location
