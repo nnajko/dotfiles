@@ -1,126 +1,154 @@
-{
-    "layer": "top",
-    "position": "top",
-    "margin-top": 0,
-    "modules-left": [
-        "hyprland/workspaces"
-    ],
-    "modules-center": [
-        "mpris"
-    ],
-    "modules-right": [
-        "tray",
-        "custom/frigate",
-        "custom/borg",
-        "custom/updates",
-        "pulseaudio",
-        "clock",
-        "network",
-        "bluetooth",
-        "custom/notifications",
-        "custom/lock",
-        "custom/power"
-    ],
-    "hyprland/workspaces": {
-        "disable-scroll": true,
-        "all-outputs": false,
-        "format": "{icon}",
-        "on-click": "activate",
-        "format-icons": {
-            "urgent": "",
-            "active": "",
-            "visible": "",
-            "default": "",
-            "empty": ""
+[
+    {
+        "output": "AOC 24G2W1G4 AWBM61A007191",
+        "layer": "top",
+        "position": "top",
+        "margin-top": 0,
+        "modules-left": [
+            "hyprland/workspaces"
+        ],
+        "modules-center": [
+            "mpris"
+        ],
+        "modules-right": [
+            "tray",
+            "custom/frigate",
+            "custom/borg",
+            "custom/updates",
+            "pulseaudio",
+            "clock",
+            "network",
+            "bluetooth",
+            "custom/notifications",
+            "custom/lock",
+            "custom/power"
+        ],
+        "hyprland/workspaces": {
+            "disable-scroll": true,
+            "all-outputs": false,
+            "format": "{icon}",
+            "on-click": "activate",
+            "format-icons": {
+                "urgent": "",
+                "active": "",
+                "visible": "",
+                "default": "",
+                "empty": ""
+            }
+        },
+        "network": {
+            "format-wifi": "󰤨 ",
+            "format-ethernet": " ",
+            "tooltip-format": "{ipaddr}\n\n󰅧  {bandwidthUpBytes} 󰅢  {bandwidthDownBytes}",
+            "format-linked": "󱘖 ",
+            "format-disconnected": " ",
+            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c impala",
+            "interval": 5
+        },
+        "bluetooth": {
+            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c bluetuith",
+            "format": " ",
+            "format-off": "󰂲 ",
+            "format-connected": "󰂱 ",
+            "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
+            "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
+            "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
+            "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
+        },
+        "tray": {
+            "icon-size": 14,
+            "spacing": 15
+        },
+        "clock": {
+            "timezone": "Europe/Stockholm",
+            "format": "󰥔 {:%H:%M}",
+            "on-click": "~/.config/scripts/calendar-toggle.sh",
+            "tooltip": false
+        },
+        "pulseaudio": {
+            "format": "{icon} {volume}%",
+            "format-muted": "  0%",
+            "format-icons": {
+                "default": [
+                    "",
+                    "",
+                    " "
+                ]
+            },
+            "on-click-right": "pactl -- set-sink-mute 0 toggle",
+            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer"
+        },
+        "custom/frigate": {
+            "exec": "if [ -f ~/.cache/frigate-notify-muted ]; then echo '{\"text\": \"󰂛\", \"class\": \"muted\", \"tooltip\": \"Frigate: muted\"}'; else echo '{\"text\": \"󰖃\", \"class\": \"active\", \"tooltip\": \"Frigate: active\"}'; fi",
+            "return-type": "json",
+            "interval": 2,
+            "on-click": "~/.local/bin/frigate-notify-toggle.sh",
+            "format": "{}"
+        },
+        "custom/borg": {
+            "exec": "~/.config/scripts/borg-status.sh",
+            "return-type": "json",
+            "interval": 60,
+            "format": "{}"
+        },
+        "custom/updates": {
+            "exec": "~/.config/scripts/check-updates.sh",
+            "return-type": "json",
+            "interval": 3600,
+            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c 'sudo pacman -Syu; echo; echo Done. Press enter to close.; read'",
+            "format": "{}"
+        },
+        "custom/lock": {
+            "tooltip-format": "Lock",
+            "on-click": "hyprlock",
+            "format": ""
+        },
+        "custom/power": {
+            "tooltip-format": "Power off",
+            "on-click": "~/.config/scripts/shutdown.sh",
+            "format": "⏻ "
+        },
+        "custom/notifications": {
+            "exec": "swaync-client -swb",
+            "return-type": "json",
+            "format": " {text}",
+            "on-click": "swaync-client -t -sw",
+            "escape": true,
+            "tooltip-format": "Open notifications"
+        },
+        "mpris": {
+            "format": "  {artist} - {title}",
+            "format-paused": "  {artist} - {title}",
+            "format-stopped": "",
+            "player": "spotify",
+            "tooltip": false,
+            "on-click": "playerctl -p spotify play-pause",
+            "max-length": 75
         }
     },
-    "network": {
-        "format-wifi": "󰤨 ",
-        "format-ethernet": " ",
-        "tooltip-format": "{ipaddr}\n\n󰅧  {bandwidthUpBytes} 󰅢  {bandwidthDownBytes}",
-        "format-linked": "󱘖 ",
-        "format-disconnected": " ",
-        "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c impala",
-        "interval": 5
-    },
-    "bluetooth": {
-        "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c bluetuith",
-        "format": " ",
-        "format-off": "󰂲 ",
-        "format-connected": "󰂱 ",
-        "tooltip-format": "{controller_alias}\t{controller_address}\n\n{num_connections} connected",
-        "tooltip-format-connected": "{controller_alias}\t{controller_address}\n\n{num_connections} connected\n\n{device_enumerate}",
-        "tooltip-format-enumerate-connected": "{device_alias}\t{device_address}",
-        "tooltip-format-enumerate-connected-battery": "{device_alias}\t{device_address}\t{device_battery_percentage}%"
-    },
-    "tray": {
-        "icon-size": 14,
-        "spacing": 15
-    },
-    "clock": {
-        "timezone": "Europe/Stockholm",
-        "format": "󰥔 {:%H:%M}",
-        "on-click": "~/.config/scripts/calendar-toggle.sh",
-        "tooltip": false
-    },
-    "pulseaudio": {
-        "format": "{icon} {volume}%",
-        "format-muted": "  0%",
-        "format-icons": {
-            "default": [
-                "",
-                "",
-                " "
-            ]
-        },
-        "on-click-right": "pactl -- set-sink-mute 0 toggle",
-        "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer"
-    },
-    "custom/frigate": {
-        "exec": "if [ -f ~/.cache/frigate-notify-muted ]; then echo '{\"text\": \"󰂛\", \"class\": \"muted\", \"tooltip\": \"Frigate: muted\"}'; else echo '{\"text\": \"󰖃\", \"class\": \"active\", \"tooltip\": \"Frigate: active\"}'; fi",
-        "return-type": "json",
-        "interval": 2,
-        "on-click": "~/.local/bin/frigate-notify-toggle.sh",
-        "format": "{}"
-    },
-    "custom/borg": {
-        "exec": "~/.config/scripts/borg-status.sh",
-        "return-type": "json",
-        "interval": 60,
-        "format": "{}"
-    },
-    "custom/updates": {
-        "exec": "~/.config/scripts/check-updates.sh",
-        "return-type": "json",
-        "interval": 3600,
-        "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c 'sudo pacman -Syu; echo; echo Done. Press enter to close.; read'",
-        "format": "{}"
-    },
-    "custom/lock": {
-        "tooltip-format": "Lock",
-        "on-click": "hyprlock",
-        "format": ""
-    },
-    "custom/power": {
-        "tooltip-format": "Power off",
-        "on-click": "~/.config/scripts/shutdown.sh",
-        "format": "⏻ "
-    },
-    "custom/notifications": {
-        "exec": "swaync-client -swb",
-        "return-type": "json",
-        "format": " {text}",
-        "on-click": "swaync-client -t -sw",
-        "escape": true,
-        "tooltip-format": "Open notifications"
-    },
-    "mpris": {
-        "format": "  {artist} - {title}",
-        "format-paused": "  {artist} - {title}",
-        "format-stopped": "",
-        "player": "spotify",
-        "tooltip": false,
-        "on-click": "playerctl -p spotify play-pause",
-        "max-length": 75
+    {
+        "output": "Dell Inc. DELL U2414H 292K46CJ2AEL",
+        "layer": "top",
+        "position": "top",
+        "height": 34,
+        "margin-top": 0,
+        "modules-left": [
+            "hyprland/workspaces"
+        ],
+        "modules-center": [],
+        "modules-right": [],
+        "hyprland/workspaces": {
+            "disable-scroll": true,
+            "all-outputs": false,
+            "format": "{icon}",
+            "on-click": "activate",
+            "format-icons": {
+                "urgent": "",
+                "active": "",
+                "visible": "",
+                "default": "",
+                "empty": ""
+            }
+        }
     }
-}
+]
