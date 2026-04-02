@@ -4,30 +4,12 @@ return {
         {
             'saghen/blink.cmp',
             version = '1.*',
-            dependencies = {
-                "giuxt/blink-cmp-copilot",
-            },
             config = function()
                 local blink = require('blink.cmp')
                 blink.setup({
                     fuzzy = { implementation = "prefer_rust_with_warning" },
                     sources = {
-                        default = { "lsp", "copilot", "easy-dotnet", "path", "snippets", "buffer" },
-                        providers = {
-                            ["easy-dotnet"] = {
-                                name = "easy-dotnet",
-                                enabled = true,
-                                module = "easy-dotnet.completion.blink",
-                                score_offset = 10000,
-                                async = true,
-                            },
-                            ["copilot"] = {
-                                name = "copilot",
-                                module = "blink-cmp-copilot",
-                                score_offset = 100,
-                                async = true,
-                            },
-                        },
+                        default = { "lsp", "path", "snippets", "buffer" },
                     },
                 })
             end,
@@ -44,16 +26,18 @@ return {
     config = function()
         local capabilities = require('blink.cmp').get_lsp_capabilities()
 
-        local servers = { 'lua_ls', 'ts_ls', 'jsonls', 'yamlls', 'html', 'cssls', 'rust_analyzer' }
+        local servers = { 'lua_ls', 'ts_ls', 'jsonls', 'yamlls', 'html', 'cssls' }
         for _, server in ipairs(servers) do
             vim.lsp.config(server, { capabilities = capabilities })
         end
         vim.lsp.enable(servers)
 
+
         vim.api.nvim_create_autocmd('LspAttach', {
             group = vim.api.nvim_create_augroup('lsp-keymaps', { clear = true }),
             callback = function(args)
                 local buf = args.buf
+                local opts = { buffer = buf, silent = true }
 
                 local function map(mode, lhs, rhs, desc)
                     vim.keymap.set(mode, lhs, rhs, { buffer = buf, silent = true, desc = desc })

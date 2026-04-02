@@ -2,6 +2,13 @@ return
 {
     "GustavEikaas/easy-dotnet.nvim",
     dependencies = { "nvim-lua/plenary.nvim", 'nvim-telescope/telescope.nvim', },
+    ft = { "cs", "vb", "fsproj", "csproj", "solution" },
+    cond = function()
+        return vim.fn.glob('*.sln') ~= ''
+            or vim.fn.glob('*.slnx') ~= ''
+            or vim.fn.glob('*/*.csproj') ~= ''
+            or vim.fn.glob('*/*.fsproj') ~= ''
+    end,
     config = function()
         local dotnet = require("easy-dotnet")
         dotnet.setup({
@@ -23,6 +30,10 @@ return
                 handler = false
             }
         })
+
+        local capabilities = require('blink.cmp').get_lsp_capabilities()
+        vim.lsp.config('easy-dotnet', { capabilities = capabilities })
+        vim.lsp.enable('easy-dotnet')
 
         vim.keymap.set("n", "<leader>nt", function()
             dotnet.testrunner()

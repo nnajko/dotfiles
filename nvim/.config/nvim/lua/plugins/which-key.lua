@@ -8,7 +8,6 @@ return {
             { "<leader>h", group = "Git hunks" },
             { "<leader>n", group = "Dotnet" },
             { "<leader>p", group = "Project/Files" },
-            { "<leader>t", group = "Test" },
             { "<leader>x", group = "Diagnostics" },
             { "<leader>c", group = "Code" },
             { "<leader>g", group = "Git" },

@@ -55,7 +55,9 @@ return {
         config = function()
             local dap = require("dap")
 
-            require("easy-dotnet.netcoredbg").register_dap_variables_viewer()
+            if package.loaded['easy-dotnet'] then
+                require("easy-dotnet.netcoredbg").register_dap_variables_viewer()
+            end
 
             -- Keymaps for controlling the debugger
             vim.keymap.set("n", "<leader>dq", function()

@@ -9,7 +9,6 @@ return {
             "json", "yaml", "xml", "toml",
             "html", "css", "javascript", "typescript",
             "bash", "dockerfile", "gitcommit", "gitignore",
-            "rust", "go",
         })
         treesitter.setup({
             highlight = {

@@ -2,12 +2,21 @@ return {
     'nvim-lualine/lualine.nvim',
     dependencies = { 'nvim-tree/nvim-web-devicons' },
     config = function()
-        local ok, jobs = pcall(require, "easy-dotnet.ui-modules.jobs")
-        local job_indicator = ok and { jobs.lualine } or {}
+        local job_indicator = {
+            function()
+                if package.loaded['easy-dotnet'] then
+                    return require('easy-dotnet.ui-modules.jobs').lualine()
+                end
+                return ''
+            end,
+            cond = function()
+                return package.loaded['easy-dotnet'] ~= nil
+            end,
+        }
 
         require('lualine').setup({
             sections = {
-                lualine_a = vim.list_extend({ "mode" }, job_indicator),
+                lualine_a = { "mode", job_indicator },
                 lualine_b = { "branch", "diff", "diagnostics" },
                 lualine_c = { "filename" },
                 lualine_x = { "encoding", "fileformat", "filetype" },
