@@ -9,6 +9,7 @@ Personal dotfiles managed with [GNU Stow](https://www.gnu.org/software/stow/).
 | `backgrounds` | Desktop wallpapers |
 | `bat` | Syntax highlighting (Catppuccin Mocha) |
 | `delta` | Git diff viewer themes |
+| `firefox` | user.js and userChrome.css (`firefox/install.sh`) |
 | `ghostty` | Terminal emulator config |
 | `git` | Git config with delta pager |
 | `hypr` | Hyprland, hypridle, hyprlock, hyprpaper, hyprsunset |
