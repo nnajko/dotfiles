@@ -38,6 +38,7 @@ tooltip, tooltip * {
   color: @sky;
 }
 
+#custom-power-profile,
 #custom-frigate,
 #custom-borg,
 #custom-updates,
@@ -135,6 +136,20 @@ tooltip, tooltip * {
   margin: 0;
 }
 
+#custom-power-profile {
+  border-radius: 0.5rem;
+  margin-right: 0.5rem;
+  color: @green;
+}
+
+#custom-power-profile.balanced {
+  color: @yellow;
+}
+
+#custom-power-profile.performance {
+  color: @red;
+}
+
 #custom-frigate {
   border-radius: 0.5rem;
   margin-right: 0.5rem;
@@ -158,6 +173,7 @@ tooltip, tooltip * {
   padding: 0.5rem;
 }
 
+#custom-power-profile:hover,
 #custom-frigate:hover,
 #custom-borg:hover,
 #custom-updates:hover,

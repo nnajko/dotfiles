@@ -12,6 +12,7 @@
         ],
         "modules-right": [
             "tray",
+            "custom/power-profile",
             "custom/frigate",
             "custom/borg",
             "custom/updates",
@@ -115,6 +116,13 @@
             "on-click": "swaync-client -t -sw",
             "escape": true,
             "tooltip-format": "Open notifications"
+        },
+        "custom/power-profile": {
+            "exec": "~/.config/scripts/power-profile.sh",
+            "return-type": "json",
+            "interval": 5,
+            "on-click": "~/.config/scripts/power-profile.sh toggle",
+            "format": "{}"
         },
         "mpris": {
             "format": "  {artist} - {title}",
