@@ -1,5 +1,5 @@
 # PATH
-export PATH="$HOME/.config/scripts:$HOME/.dotnet/tools:$HOME/.local/bin:$PATH"
+export PATH="$HOME/.config/scripts:$HOME/.dotnet/tools:$HOME/.local/bin:$HOME/Android/Sdk/platform-tools:$PATH"
 
 # Variables
 export EDITOR='nvim'
