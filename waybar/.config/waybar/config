@@ -21,6 +21,7 @@
             "network",
             "bluetooth",
             "custom/notifications",
+            "idle_inhibitor",
             "custom/lock",
             "custom/power"
         ],
@@ -75,15 +76,17 @@
                     " "
                 ]
             },
-            "on-click-right": "pactl -- set-sink-mute 0 toggle",
-            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer"
+            "on-click-right": "swayosd-client --output-volume mute-toggle",
+            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer",
+            "on-scroll-up": "swayosd-client --output-volume +5",
+            "on-scroll-down": "swayosd-client --output-volume -5"
         },
         "custom/frigate": {
             "exec": "if [ -f ~/.cache/frigate-notify-muted ]; then echo '{\"text\": \"󰂛\", \"class\": \"muted\", \"tooltip\": \"Frigate: muted\"}'; else echo '{\"text\": \"󰖃\", \"class\": \"active\", \"tooltip\": \"Frigate: active\"}'; fi",
             "return-type": "json",
-            "interval": 2,
             "on-click": "~/.local/bin/frigate-notify-toggle.sh",
-            "format": "{}"
+            "format": "{}",
+            "signal": 9
         },
         "custom/borg": {
             "exec": "~/.config/scripts/borg-status.sh",
@@ -120,9 +123,9 @@
         "custom/power-profile": {
             "exec": "~/.config/scripts/power-profile.sh",
             "return-type": "json",
-            "interval": 5,
             "on-click": "~/.config/scripts/power-profile.sh toggle",
-            "format": "{}"
+            "format": "{}",
+            "signal": 10
         },
         "mpris": {
             "format": "  {artist} - {title}",
@@ -132,6 +135,15 @@
             "tooltip": false,
             "on-click": "playerctl -p spotify play-pause",
             "max-length": 75
+        },
+        "idle_inhibitor": {
+            "format": "{icon}",
+            "format-icons": {
+                "activated": "󰅶",
+                "deactivated": "󰾪"
+            },
+            "tooltip-format-activated": "Keeping screen awake",
+            "tooltip-format-deactivated": "Screen sleeps when idle"
         }
     },
     {
@@ -144,7 +156,9 @@
             "hyprland/workspaces"
         ],
         "modules-center": [],
-        "modules-right": [],
+        "modules-right": [
+            "clock"
+        ],
         "hyprland/workspaces": {
             "disable-scroll": true,
             "all-outputs": false,
@@ -156,6 +170,12 @@
                 "default": "",
                 "empty": ""
             }
+        },
+        "clock": {
+            "timezone": "Europe/Stockholm",
+            "format": "󰥔 {:%H:%M}",
+            "on-click": "~/.config/scripts/calendar-toggle.sh",
+            "tooltip": false
         }
     }
 ]

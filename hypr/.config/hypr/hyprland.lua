@@ -160,6 +160,7 @@ hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" 
 -- fully transparent margins.
 hl.layer_rule({ name = "blur-rofi", match = { namespace = "^(rofi)$" }, blur = true, ignore_alpha = 0.3, animation = "popin 90%" })
 hl.layer_rule({ name = "blur-swaync", match = { namespace = "^(swaync-.*)$" }, blur = true, ignore_alpha = 0.3 })
+hl.layer_rule({ name = "blur-waybar", match = { namespace = "^(waybar)$" }, blur = true, ignore_alpha = 0.2 })
 hl.layer_rule({ name = "blur-swayosd", match = { namespace = "^(swayosd)$" }, blur = true, ignore_alpha = 0.3, animation = "fade" })
 hl.layer_rule({ name = "swaync-slide", match = { namespace = "^(swaync-control-center)$" }, animation = "slide right" })
 

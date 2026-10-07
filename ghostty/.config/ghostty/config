@@ -7,3 +7,6 @@ gtk-titlebar = false
 cursor-style = bar
 copy-on-select = clipboard
 mouse-hide-while-typing = true
+window-padding-x = 12
+window-padding-y = 10
+window-padding-balance = true
