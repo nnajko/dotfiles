@@ -9,3 +9,6 @@ __pycache__/
 
 # TPM managed plugins
 tmux/.tmux/plugins/
+
+# Nautilus bookmarks (machine-specific mount paths)
+gtk/.config/gtk-3.0/bookmarks
