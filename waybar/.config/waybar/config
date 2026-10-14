@@ -45,11 +45,11 @@
             "tooltip-format": "{ipaddr}\n\n󰅧  {bandwidthUpBytes} 󰅢  {bandwidthDownBytes}",
             "format-linked": "󱘖 ",
             "format-disconnected": " ",
-            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c impala",
+            "on-click": "~/.config/scripts/float-term.sh /bin/zsh -c impala",
             "interval": 5
         },
         "bluetooth": {
-            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c bluetuith",
+            "on-click": "~/.config/scripts/float-term.sh /bin/zsh -c bluetuith",
             "format": " ",
             "format-off": "󰂲 ",
             "format-connected": "󰂱 ",
@@ -79,7 +79,7 @@
                 ]
             },
             "on-click-right": "swayosd-client --output-volume mute-toggle",
-            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c pulsemixer",
+            "on-click": "~/.config/scripts/float-term.sh /bin/zsh -c pulsemixer",
             "on-scroll-up": "swayosd-client --output-volume +5",
             "on-scroll-down": "swayosd-client --output-volume -5"
         },
@@ -118,7 +118,7 @@
             "return-type": "json",
             "interval": 3600,
             "signal": 8,
-            "on-click": "ghostty --class='com.ghostty.float' -e /bin/zsh -c 'sudo pacman -Syu; echo; echo Done. Press enter to close.; read'",
+            "on-click": "~/.config/scripts/float-term.sh /bin/zsh -c 'sudo pacman -Syu; echo; echo Done. Press enter to close.; read'",
             "format": "{}"
         },
         "custom/lock": {

@@ -12,6 +12,9 @@ git clone git@github.com:nnajko/dotfiles.git ~/dotfiles   # or https://github.co
 cd ~/dotfiles
 sudo pacman -S --needed - < packages.txt
 yay -S --needed - < packages-aur.txt
+# Laptop only: power management, Ivy Bridge video decoding, kitty (see "Laptop" below)
+sudo pacman -S --needed - < packages-laptop.txt
+yay -S --needed - < packages-laptop-aur.txt
 
 # 2. Link everything (existing files are moved to ~/.dotfiles-backup/<timestamp>/)
 ./install.sh            # everything
@@ -54,7 +57,40 @@ If hyprpm fails with "failed to create cache dir", run `sudo chown -R $USER: /va
 
 **Monitors.** `hypr/.config/hypr/hyprland.lua` loads `hosts/<hostname>.lua` if it exists, otherwise
 every display uses its preferred mode (fine for a laptop). To pin a layout, copy `hosts/fractal.lua`
-to `hosts/$(cat /etc/hostname).lua` and edit it (`hyprctl monitors` lists the outputs).
+to `hosts/$(cat /etc/hostname).lua` and edit it (`hyprctl monitors` lists the outputs). A host file can also
+end with `return { workspaces = 8 }` to change the number of workspaces (the default is 4).
+
+**Laptop.** Enable power management and fan control. TLP replaces `systemd-rfkill`:
+
+```bash
+sudo systemctl enable --now tlp tlp-pd thermald mbpfan
+sudo systemctl mask systemd-rfkill.service systemd-rfkill.socket
+```
+
+On Apple keyboards, swap Fn and left Ctrl (kernel `hid_apple` driver; the initramfs carries the option):
+
+```bash
+echo 'options hid_apple swap_fn_leftctrl=1' | sudo tee /etc/modprobe.d/hid_apple.conf
+sudo mkinitcpio -P
+```
+
+Log in automatically on TTY1. `.zprofile` then starts Hyprland, which opens hyprlock straight away (see
+the autostart block in `hyprland.lua`), and unlocking it also unlocks the keyring:
+
+```bash
+sudo mkdir -p /etc/systemd/system/getty@tty1.service.d
+sudo tee /etc/systemd/system/getty@tty1.service.d/autologin.conf <<EOF
+[Service]
+ExecStart=
+ExecStart=-/usr/bin/agetty -o '-p -f -- \\\\u' --noreset --noclear --autologin $USER - \${TERM}
+EOF
+sudo systemctl daemon-reload
+```
+
+Ghostty needs OpenGL 4.3. On older GPUs (the 2012 MacBook Pro's HD 4000 has 4.2) remove it with
+`sudo pacman -Rns ghostty`. Hyprland, waybar and the scripts use kitty when ghostty isn't installed,
+and the kitty config looks the same. The waybar power-profile toggle switches TLP profiles through
+`tlp-pd` (no sudo) on CPUs without `energy_performance_preference`.
 
 **Firefox.** Start Firefox once so it creates a profile, then run `firefox/install.sh`.
 
@@ -79,6 +115,7 @@ to `hosts/$(cat /etc/hostname).lua` and edit it (`hyprctl monitors` lists the ou
 | `git` | Git config with delta pager, global ignore |
 | `gtk` | GTK 3/4 colours and theme, default cursor theme |
 | `hypr` | Hyprland (Lua), hypridle, hyprlock, hyprsunset, per-host monitor files |
+| `kitty` | Terminal where ghostty is unsupported, styled like ghostty |
 | `mise` | Global tool versions |
 | `nvim` | Neovim (lazy.nvim, blink.cmp, treesitter, telescope, dap) |
 | `rofi` | Launcher |

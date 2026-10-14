@@ -8,4 +8,8 @@ if pgrep -x calcurse > /dev/null; then
 fi
 
 calcurse-caldav &>/dev/null
-ghostty --gtk-single-instance=false --title='calcurse-float' --window-width=150 --window-height=40 -e calcurse
+if command -v ghostty > /dev/null; then
+    ghostty --gtk-single-instance=false --title='calcurse-float' --window-width=150 --window-height=40 -e calcurse
+else
+    kitty --title='calcurse-float' -o remember_window_size=no -o initial_window_width=150c -o initial_window_height=40c calcurse
+fi

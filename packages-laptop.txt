@@ -1,0 +1,6 @@
+kitty
+libva-intel-driver
+powertop
+thermald
+tlp
+tlp-pd

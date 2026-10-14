@@ -13,7 +13,7 @@ DOTFILES="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
 BACKUP="$HOME/.dotfiles-backup/$(date +%Y%m%d-%H%M%S)"
 
 CLI=(bat delta git mise nvim scripts ssh starship tmux yazi zshrc)
-DESKTOP=(autostart backgrounds cliphist ghostty gtk hypr rofi satty swaync swayosd uwsm waybar)
+DESKTOP=(autostart backgrounds cliphist ghostty gtk hypr kitty rofi satty swaync swayosd uwsm waybar)
 
 case "${1:-}" in
 	"") packages=("${CLI[@]}" "${DESKTOP[@]}") ;;

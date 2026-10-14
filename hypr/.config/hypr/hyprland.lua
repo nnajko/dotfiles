@@ -15,7 +15,8 @@ local function file_exists(path)
 end
 
 -- Per-machine layout lives in hosts/<hostname>.lua. Without one, every output
--- gets its preferred mode, which is what a laptop wants.
+-- gets its preferred mode, which is what a laptop wants. A host file may return
+-- { workspaces = n } to change the number of workspaces (per monitor).
 local hostname_file = io.open("/etc/hostname")
 local hostname = hostname_file and hostname_file:read("l") or ""
 if hostname_file then
@@ -23,17 +24,24 @@ if hostname_file then
 end
 
 local host_config = config_dir .. "hosts/" .. hostname .. ".lua"
+local host = {}
 if file_exists(host_config) then
-	dofile(host_config)
+	host = dofile(host_config) or {}
 else
 	hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
 end
+local workspace_count = host.workspaces or 4
 
 ---------------------
 ---- MY PROGRAMS ----
 ---------------------
 
-local terminal = "ghostty"
+-- ghostty isn't supported on every machine (e.g. the laptop); fall back to kitty
+local ghostty_bin = io.open("/usr/bin/ghostty")
+local terminal = ghostty_bin and "ghostty" or "kitty"
+if ghostty_bin then
+	ghostty_bin:close()
+end
 local fileManager = "nautilus"
 local menu = "rofi -show drun"
 local shell = "/bin/zsh"
@@ -149,7 +157,7 @@ hl.config({
 		follow_mouse = 1,
 		sensitivity = 0,
 		numlock_by_default = true,
-		touchpad = { natural_scroll = false },
+		touchpad = { natural_scroll = true },
 	},
 })
 
@@ -185,10 +193,22 @@ hl.animation({ leaf = "zoomFactor", enabled = true, speed = 7, bezier = "quick" 
 
 -- Frosted glass behind rofi and swaync; ignore_alpha keeps blur off their
 -- fully transparent margins.
-hl.layer_rule({ name = "blur-rofi", match = { namespace = "^(rofi)$" }, blur = true, ignore_alpha = 0.3, animation = "popin 90%" })
+hl.layer_rule({
+	name = "blur-rofi",
+	match = { namespace = "^(rofi)$" },
+	blur = true,
+	ignore_alpha = 0.3,
+	animation = "popin 90%",
+})
 hl.layer_rule({ name = "blur-swaync", match = { namespace = "^(swaync-.*)$" }, blur = true, ignore_alpha = 0.3 })
 hl.layer_rule({ name = "blur-waybar", match = { namespace = "^(waybar)$" }, blur = true, ignore_alpha = 0.2 })
-hl.layer_rule({ name = "blur-swayosd", match = { namespace = "^(swayosd)$" }, blur = true, ignore_alpha = 0.3, animation = "fade" })
+hl.layer_rule({
+	name = "blur-swayosd",
+	match = { namespace = "^(swayosd)$" },
+	blur = true,
+	ignore_alpha = 0.3,
+	animation = "fade",
+})
 hl.layer_rule({ name = "swaync-slide", match = { namespace = "^(swaync-control-center)$" }, animation = "slide right" })
 
 ---------------------
@@ -202,7 +222,7 @@ if has_smw then
 	hl.config({
 		plugin = {
 			split_monitor_workspaces = {
-				count = 4,
+				count = workspace_count,
 				keep_focused = 0,
 				enable_notifications = 0,
 				enable_persistent_workspaces = 1,
@@ -255,7 +275,10 @@ hl.bind(
 		"if systemctl is-active --quiet mullvad-daemon.service; then pkill -f mullvad-vpn; systemctl stop mullvad-daemon.service; else systemctl start mullvad-daemon.service && mullvad-vpn &>/dev/null & fi"
 	)
 )
-hl.bind(mainMod .. " + SHIFT + C", hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p clipboard | cliphist decode | wl-copy"))
+hl.bind(
+	mainMod .. " + SHIFT + C",
+	hl.dsp.exec_cmd("cliphist list | rofi -dmenu -p clipboard | cliphist decode | wl-copy")
+)
 hl.bind(mainMod .. " + S", hl.dsp.workspace.toggle_special("scratch"))
 hl.bind(mainMod .. " + F12", hl.dsp.exec_cmd("~/.local/bin/frigate-notify-toggle.sh"))
 
@@ -286,7 +309,7 @@ hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
 -- Workspace switching via split-monitor-workspaces plugin
 if has_smw then
 	local smw = hl.plugin.split_monitor_workspaces
-	for i = 1, 4 do
+	for i = 1, workspace_count do
 		hl.bind(mainMod .. " + " .. i, function()
 			return smw.workspace(i)
 		end)
@@ -295,9 +318,11 @@ if has_smw then
 		end)
 	end
 else
-	for i = 1, 4 do
+	for i = 1, workspace_count do
 		hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = tostring(i) }))
 		hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = tostring(i), follow = false }))
+		-- Keep them all in waybar, like the plugin's persistent workspaces
+		hl.workspace_rule({ workspace = tostring(i), persistent = true })
 	end
 end
 
@@ -329,11 +354,27 @@ hl.bind("XF86AudioPlay", hl.dsp.exec_cmd("playerctl play-pause"), { locked = tru
 hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true })
 
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
-hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume -5"), { locked = true, repeating = true })
-hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume +5"), { locked = true, repeating = true })
+hl.bind(
+	"XF86AudioLowerVolume",
+	hl.dsp.exec_cmd("swayosd-client --output-volume -5"),
+	{ locked = true, repeating = true }
+)
+hl.bind(
+	"XF86AudioRaiseVolume",
+	hl.dsp.exec_cmd("swayosd-client --output-volume +5"),
+	{ locked = true, repeating = true }
+)
 
-hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("swayosd-client --brightness raise"), { locked = true, repeating = true })
-hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lower"), { locked = true, repeating = true })
+hl.bind(
+	"XF86MonBrightnessUp",
+	hl.dsp.exec_cmd("swayosd-client --brightness raise"),
+	{ locked = true, repeating = true }
+)
+hl.bind(
+	"XF86MonBrightnessDown",
+	hl.dsp.exec_cmd("swayosd-client --brightness lower"),
+	{ locked = true, repeating = true }
+)
 
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----
