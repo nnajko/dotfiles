@@ -10,8 +10,13 @@ if [ -z "$PROFILE_DIR" ]; then
     exit 1
 fi
 
-ln -sf "$SCRIPT_DIR/user.js" "$PROFILE_DIR/user.js"
-echo "Linked user.js -> $PROFILE_DIR/user.js"
-
-ln -sfn "$SCRIPT_DIR/chrome" "$PROFILE_DIR/chrome"
-echo "Linked chrome/ -> $PROFILE_DIR/chrome"
+for name in user.js chrome; do
+    target="$PROFILE_DIR/$name"
+    # ln -sfn onto a real directory would create the link *inside* it
+    if [ -e "$target" ] && [ ! -L "$target" ]; then
+        mv "$target" "$target.bak-$(date +%Y%m%d-%H%M%S)"
+        echo "Moved existing $name aside"
+    fi
+    ln -sfn "$SCRIPT_DIR/$name" "$target"
+    echo "Linked $name -> $target"
+done

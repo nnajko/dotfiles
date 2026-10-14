@@ -1,12 +1,33 @@
 -- Migrated from hyprland.conf for Hyprland 0.55 (hyprlang -> lua).
--- Old config kept at hyprland.conf.pre-lua-backup.
 
 ------------------
 ---- MONITORS ----
 ------------------
 
-hl.monitor({ output = "desc:AOC 24G2W1G4 AWBM61A007191", mode = "1920x1080@144", position = "0x0", scale = 1 })
-hl.monitor({ output = "desc:Dell Inc. DELL U2414H 292K46CJ2AEL", mode = "1920x1080@60", position = "1920x0", scale = 1 })
+local config_dir = debug.getinfo(1, "S").source:match("^@(.*/)")
+
+local function file_exists(path)
+	local f = io.open(path)
+	if f then
+		f:close()
+	end
+	return f ~= nil
+end
+
+-- Per-machine layout lives in hosts/<hostname>.lua. Without one, every output
+-- gets its preferred mode, which is what a laptop wants.
+local hostname_file = io.open("/etc/hostname")
+local hostname = hostname_file and hostname_file:read("l") or ""
+if hostname_file then
+	hostname_file:close()
+end
+
+local host_config = config_dir .. "hosts/" .. hostname .. ".lua"
+if file_exists(host_config) then
+	dofile(host_config)
+else
+	hl.monitor({ output = "", mode = "preferred", position = "auto", scale = "auto" })
+end
 
 ---------------------
 ---- MY PROGRAMS ----
@@ -26,8 +47,14 @@ local shell = "/bin/zsh"
 -- which loaded asynchronously *after* the config was parsed and caused a
 -- transient "unknown hyprbars keyword" error overlay on cold start.
 -- Paths are hyprpm's build cache; they are stable across plugin rebuilds.
+-- On a fresh machine the plugin isn't built yet (see README), so fall back to
+-- plain workspaces instead of breaking the workspace binds.
 local hyprpm = "/var/cache/hyprpm/" .. os.getenv("USER")
-hl.plugin.load(hyprpm .. "/split-monitor-workspaces/split-monitor-workspaces.so")
+local smw_plugin = hyprpm .. "/split-monitor-workspaces/split-monitor-workspaces.so"
+local has_smw = file_exists(smw_plugin)
+if has_smw then
+	hl.plugin.load(smw_plugin)
+end
 --hl.plugin.load(hyprpm .. "/hyprland-plugins/hyprbars.so")
 
 -------------------
@@ -171,24 +198,26 @@ hl.layer_rule({ name = "swaync-slide", match = { namespace = "^(swaync-control-c
 hl.gesture({ fingers = 3, direction = "horizontal", action = "workspace" })
 
 --split-monitor-workspaces plugin config (note: key uses underscores in Lua mode)
-hl.config({
-	plugin = {
-		split_monitor_workspaces = {
-			count = 4,
-			keep_focused = 0,
-			enable_notifications = 0,
-			enable_persistent_workspaces = 1,
+if has_smw then
+	hl.config({
+		plugin = {
+			split_monitor_workspaces = {
+				count = 4,
+				keep_focused = 0,
+				enable_notifications = 0,
+				enable_persistent_workspaces = 1,
+			},
+			--		hyprbars = {
+			--			bar_height = 20,
+			--			bar_text_size = 11,
+			--			bar_title_enabled = true,
+			--			bar_part_of_window = true,
+			--			bar_color = "rgba(282828dd)",
+			--			["col.text"] = "rgba(ebdbb2ee)",
+			--		},
 		},
-		--		hyprbars = {
-		--			bar_height = 20,
-		--			bar_text_size = 11,
-		--			bar_title_enabled = true,
-		--			bar_part_of_window = true,
-		--			bar_color = "rgba(282828dd)",
-		--			["col.text"] = "rgba(ebdbb2ee)",
-		--		},
-	},
-})
+	})
+end
 
 ---------------------
 ---- KEYBINDINGS ----
@@ -255,14 +284,21 @@ hl.bind(mainMod .. " + K", hl.dsp.focus({ direction = "up" }))
 hl.bind(mainMod .. " + J", hl.dsp.focus({ direction = "down" }))
 
 -- Workspace switching via split-monitor-workspaces plugin
-local smw = hl.plugin.split_monitor_workspaces
-for i = 1, 4 do
-	hl.bind(mainMod .. " + " .. i, function()
-		return smw.workspace(i)
-	end)
-	hl.bind(mainMod .. " + SHIFT + " .. i, function()
-		return smw.move_to_workspace_silent(i)
-	end)
+if has_smw then
+	local smw = hl.plugin.split_monitor_workspaces
+	for i = 1, 4 do
+		hl.bind(mainMod .. " + " .. i, function()
+			return smw.workspace(i)
+		end)
+		hl.bind(mainMod .. " + SHIFT + " .. i, function()
+			return smw.move_to_workspace_silent(i)
+		end)
+	end
+else
+	for i = 1, 4 do
+		hl.bind(mainMod .. " + " .. i, hl.dsp.focus({ workspace = tostring(i) }))
+		hl.bind(mainMod .. " + SHIFT + " .. i, hl.dsp.window.move({ workspace = tostring(i), follow = false }))
+	end
 end
 
 -- Move window
@@ -295,6 +331,9 @@ hl.bind("XF86AudioPrev", hl.dsp.exec_cmd("playerctl previous"), { locked = true 
 hl.bind("XF86AudioMute", hl.dsp.exec_cmd("swayosd-client --output-volume mute-toggle"), { locked = true })
 hl.bind("XF86AudioLowerVolume", hl.dsp.exec_cmd("swayosd-client --output-volume -5"), { locked = true, repeating = true })
 hl.bind("XF86AudioRaiseVolume", hl.dsp.exec_cmd("swayosd-client --output-volume +5"), { locked = true, repeating = true })
+
+hl.bind("XF86MonBrightnessUp", hl.dsp.exec_cmd("swayosd-client --brightness raise"), { locked = true, repeating = true })
+hl.bind("XF86MonBrightnessDown", hl.dsp.exec_cmd("swayosd-client --brightness lower"), { locked = true, repeating = true })
 
 --------------------------------
 ---- WINDOWS AND WORKSPACES ----

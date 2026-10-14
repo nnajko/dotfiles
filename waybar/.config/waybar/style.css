@@ -62,6 +62,8 @@ tooltip, tooltip * {
 #mpris,
 #clock,
 #pulseaudio,
+#backlight,
+#battery,
 #custom-lock,
 #network,
 #bluetooth,
@@ -84,6 +86,27 @@ tooltip, tooltip * {
 #pulseaudio {
   color: @maroon;
   border-radius: 0.5rem 0px 0px 0.5rem;
+}
+
+#backlight {
+  color: @yellow;
+}
+
+#battery {
+  color: @green;
+}
+
+#battery.charging,
+#battery.plugged {
+  color: @teal;
+}
+
+#battery.warning:not(.charging) {
+  color: @peach;
+}
+
+#battery.critical:not(.charging) {
+  color: @red;
 }
 
 #mpris {
@@ -214,6 +237,8 @@ window#waybar.HDMI-A-3 #clock {
 #custom-updates:hover,
 #mpris:hover,
 #pulseaudio:hover,
+#backlight:hover,
+#battery:hover,
 #network:hover,
 #bluetooth:hover,
 #custom-notifications:hover,

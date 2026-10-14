@@ -12,3 +12,8 @@ tmux/.tmux/plugins/
 
 # Nautilus bookmarks (machine-specific mount paths)
 gtk/.config/gtk-3.0/bookmarks
+
+# Local clones and backups that land in stowed (folded) directories
+hypr/.config/hypr/plugins/
+*.bak
+*.bak-*

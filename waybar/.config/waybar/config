@@ -1,6 +1,6 @@
 [
     {
-        "output": "AOC 24G2W1G4 AWBM61A007191",
+        "output": ["!Dell Inc. DELL U2414H 292K46CJ2AEL", "*"],
         "layer": "top",
         "position": "top",
         "margin-top": 0,
@@ -17,6 +17,8 @@
             "custom/borg",
             "custom/updates",
             "pulseaudio",
+            "backlight",
+            "battery",
             "clock",
             "network",
             "bluetooth",
@@ -81,8 +83,25 @@
             "on-scroll-up": "swayosd-client --output-volume +5",
             "on-scroll-down": "swayosd-client --output-volume -5"
         },
+        "backlight": {
+            "format": "{icon} {percent}%",
+            "format-icons": ["󰃞", "󰃟", "󰃠"],
+            "on-scroll-up": "swayosd-client --brightness raise",
+            "on-scroll-down": "swayosd-client --brightness lower"
+        },
+        "battery": {
+            "states": {
+                "warning": 25,
+                "critical": 10
+            },
+            "format": "{icon} {capacity}%",
+            "format-charging": "󰂄 {capacity}%",
+            "format-plugged": "󰚥 {capacity}%",
+            "format-icons": ["󰁺", "󰁼", "󰁾", "󰂀", "󰁹"],
+            "tooltip-format": "{timeTo}"
+        },
         "custom/frigate": {
-            "exec": "if [ -f ~/.cache/frigate-notify-muted ]; then echo '{\"text\": \"󰂛\", \"class\": \"muted\", \"tooltip\": \"Frigate: muted\"}'; else echo '{\"text\": \"󰖃\", \"class\": \"active\", \"tooltip\": \"Frigate: active\"}'; fi",
+            "exec": "[ -x ~/.local/bin/frigate-notify-toggle.sh ] || exit 0; if [ -f ~/.cache/frigate-notify-muted ]; then echo '{\"text\": \"󰂛\", \"class\": \"muted\", \"tooltip\": \"Frigate: muted\"}'; else echo '{\"text\": \"󰖃\", \"class\": \"active\", \"tooltip\": \"Frigate: active\"}'; fi",
             "return-type": "json",
             "on-click": "~/.local/bin/frigate-notify-toggle.sh",
             "format": "{}",
