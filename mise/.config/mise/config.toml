@@ -1,0 +1,6 @@
+[tools]
+dotnet = "latest"
+maven = "latest"
+node = "lts"
+rust = "latest"
+rust-analyzer = "latest"

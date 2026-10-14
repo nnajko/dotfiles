@@ -1,0 +1,6 @@
+export XCURSOR_SIZE=24
+export HYPRCURSOR_SIZE=24
+export SSH_AUTH_SOCK=${XDG_RUNTIME_DIR}/gcr/ssh
+export GNOME_KEYRING_CONTROL=${XDG_RUNTIME_DIR}/keyring
+export XCURSOR_THEME=catppuccin-mocha-dark-cursors
+export HYPRCURSOR_THEME=catppuccin-mocha-dark-cursors
