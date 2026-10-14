@@ -39,3 +39,6 @@ vim.opt.clipboard = "unnamedplus"
 -- Natural split directions
 vim.opt.splitright = true
 vim.opt.splitbelow = true
+
+-- Disable code folding
+vim.opt.foldenable = false

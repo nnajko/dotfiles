@@ -8,4 +8,10 @@ return {
     opts = {
         open_for_directories = true,
     },
+    -- Required for open_for_directories: without this netrw claims the
+    -- directory buffer before yazi.nvim loads, so `nvim <dir>` lands in netrw.
+    -- https://github.com/mikavilpas/yazi.nvim/issues/802
+    init = function()
+        vim.g.loaded_netrwPlugin = 1
+    end,
 }

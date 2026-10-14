@@ -15,6 +15,7 @@ return {
             html = { "prettier" },
             css = { "prettier" },
             markdown = { "prettier" },
+            go = { "goimports", "gofumpt" },
         },
         format_on_save = {
             timeout_ms = 3000,

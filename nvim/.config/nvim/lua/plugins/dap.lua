@@ -84,5 +84,26 @@ return {
                 vim.cmd("Dotnet debug default profile")
             end, { desc = "Debug dotnet (default profile)" })
         end
+    },
+    {
+        "leoluz/nvim-dap-go",
+        ft = "go",
+        dependencies = { "mfussenegger/nvim-dap" },
+        config = function()
+            require("dap-go").setup({
+                delve = {
+                    -- dlv outlives the parent process, so a crashed nvim
+                    -- doesn't leave a stuck debug session behind
+                    detached = true,
+                },
+            })
+
+            vim.keymap.set("n", "<leader>dt", function()
+                require("dap-go").debug_test()
+            end, { desc = "Debug nearest Go test" })
+            vim.keymap.set("n", "<leader>dT", function()
+                require("dap-go").debug_last_test()
+            end, { desc = "Debug last Go test" })
+        end
     }
 }
