@@ -1,0 +1,3 @@
+bluetuith
+catppuccin-cursors-mocha
+zls-bin
