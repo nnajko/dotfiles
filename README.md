@@ -33,6 +33,14 @@ chsh -s /usr/bin/zsh
 sudo usermod -aG video "$USER"   # brightness keys (swayosd); log out and back in
 ```
 
+**Power profile button** (waybar leaf icon). On the laptop it switches TLP profiles (see "Laptop"
+below). On the desktop it sets the CPU energy preference itself, which needs a sudo rule:
+
+```bash
+echo "$USER ALL=(root) NOPASSWD: /usr/bin/tee /sys/devices/system/cpu/cpu*/cpufreq/energy_performance_preference, /usr/bin/tee /proc/sys/vm/dirty_writeback_centisecs" > /tmp/power-profile
+sudo visudo -cf /tmp/power-profile && sudo install -m 440 /tmp/power-profile /etc/sudoers.d/power-profile
+```
+
 **Keyring unlock at login.** PAM has to be the only thing that starts gnome-keyring. In
 `/etc/pam.d/login`, add each line below the existing `include` of the same type (`auth`, `session`,
 `password`):
@@ -53,6 +61,7 @@ hyprpm add https://github.com/zjeffer/split-monitor-workspaces
 hyprpm enable split-monitor-workspaces
 ```
 
+Run `hyprpm update` again after every Hyprland upgrade; until then Hyprland uses the same fallback.
 If hyprpm fails with "failed to create cache dir", run `sudo chown -R $USER: /var/cache/hyprpm/$USER`.
 
 **Monitors.** `hypr/.config/hypr/hyprland.lua` loads `hosts/<hostname>.lua` if it exists, otherwise
@@ -131,4 +140,7 @@ and the kitty config looks the same. The waybar power-profile toggle switches TL
 | `yazi` | File manager |
 | `zshrc` | `.zshrc` and `.zprofile` (starts Hyprland via uwsm on TTY login) |
 
-Machine-specific bits stay out of git: `nvim` lazy-lock, GTK bookmarks, `*.local` files.
+`nvim/.config/nvim/lazy-lock.json` pins plugin versions: after `:Lazy update` on one machine, commit it
+and run `:Lazy restore` on the other. Idle timeouts are shorter on battery (see `hypridle.conf`).
+
+Machine-specific bits stay out of git: GTK bookmarks, `*.local` files.
