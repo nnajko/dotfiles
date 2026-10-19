@@ -2,6 +2,7 @@
     {
         "output": ["!Dell Inc. DELL U2414H 292K46CJ2AEL", "*"],
         "layer": "top",
+        "reload_style_on_change": true,
         "position": "top",
         "margin-top": 0,
         "modules-left": [
@@ -63,7 +64,6 @@
             "spacing": 15
         },
         "clock": {
-            "timezone": "Europe/Stockholm",
             "format": "󰥔 {:%H:%M}",
             "on-click": "~/.config/scripts/calendar-toggle.sh",
             "tooltip": false
@@ -170,6 +170,7 @@
     {
         "output": "Dell Inc. DELL U2414H 292K46CJ2AEL",
         "layer": "top",
+        "reload_style_on_change": true,
         "position": "top",
         "height": 34,
         "margin-top": 0,
@@ -193,7 +194,6 @@
             }
         },
         "clock": {
-            "timezone": "Europe/Stockholm",
             "format": "󰥔 {:%H:%M}",
             "on-click": "~/.config/scripts/calendar-toggle.sh",
             "tooltip": false
