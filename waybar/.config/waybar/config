@@ -17,7 +17,7 @@
             "custom/borg",
             "custom/updates",
             "pulseaudio",
-            "backlight",
+            "custom/backlight",
             "battery",
             "clock",
             "network",
@@ -83,9 +83,11 @@
             "on-scroll-up": "swayosd-client --output-volume +5",
             "on-scroll-down": "swayosd-client --output-volume -5"
         },
-        "backlight": {
-            "format": "{icon} {percent}%",
-            "format-icons": ["󰃞", "󰃟", "󰃠"],
+        "custom/backlight": {
+            "exec": "~/.config/scripts/backlight.sh",
+            "return-type": "json",
+            "interval": 1,
+            "format": "{}",
             "on-scroll-up": "swayosd-client --brightness raise",
             "on-scroll-down": "swayosd-client --brightness lower"
         },
