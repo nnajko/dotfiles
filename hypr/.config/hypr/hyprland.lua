@@ -55,14 +55,15 @@ local shell = "/bin/zsh"
 -- which loaded asynchronously *after* the config was parsed and caused a
 -- transient "unknown hyprbars keyword" error overlay on cold start.
 -- Paths are hyprpm's build cache; they are stable across plugin rebuilds.
--- On a fresh machine the plugin isn't built yet (see README), so fall back to
--- plain workspaces instead of breaking the workspace binds.
+-- On a fresh machine the plugin isn't built yet, and after a Hyprland update
+-- it's rejected until `hyprpm update`. hl.plugin.load doesn't report either, so
+-- check for the plugin's Lua namespace and fall back to plain workspaces.
 local hyprpm = "/var/cache/hyprpm/" .. os.getenv("USER")
 local smw_plugin = hyprpm .. "/split-monitor-workspaces/split-monitor-workspaces.so"
-local has_smw = file_exists(smw_plugin)
-if has_smw then
+if file_exists(smw_plugin) then
 	hl.plugin.load(smw_plugin)
 end
+local has_smw = hl.plugin.split_monitor_workspaces ~= nil
 --hl.plugin.load(hyprpm .. "/hyprland-plugins/hyprbars.so")
 
 -------------------
